@@ -868,6 +868,9 @@
             console.log('Lead Data:', leadData);
             
             try {
+                // Always save to localStorage first
+                localStorage.setItem('quizLead_' + Date.now(), JSON.stringify(leadData));
+                
                 // Send to Zapier webhook
                 const webhookUrl = 'https://hooks.zapier.com/hooks/catch/16479429/urzc4x0/';
                 
@@ -879,14 +882,10 @@
                     body: JSON.stringify(leadData)
                 });
                 
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
+                console.log('Zapier response status:', response.status);
+                console.log('Zapier response:', await response.text());
                 
-                // For now, just log to console and localStorage
-                localStorage.setItem('quizLead_' + Date.now(), JSON.stringify(leadData));
-                
-                // Show success and redirect
+                // Show success even if Zapier fails (data is saved locally)
                 submitBtn.textContent = 'Success! Redirecting...';
                 submitBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
                 
@@ -896,17 +895,18 @@
                 
             } catch (error) {
                 console.error('Error submitting lead:', error);
+                console.error('Error details:', error.message);
                 
-                // Show error state
-                submitBtn.textContent = 'Error - Try Again';
-                submitBtn.style.background = 'linear-gradient(135deg, #dc3545 0%, #fd7e14 100%)';
-                submitBtn.disabled = false;
+                // Still save locally and proceed (don't block user)
+                localStorage.setItem('quizLead_backup_' + Date.now(), JSON.stringify(leadData));
                 
-                // Reset button after 3 seconds
+                // Show success anyway - data is saved
+                submitBtn.textContent = 'Saved! Redirecting...';
+                submitBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                
                 setTimeout(() => {
-                    submitBtn.textContent = originalText;
-                    submitBtn.style.background = 'linear-gradient(135deg, #0066cc 0%, #0099ff 100%)';
-                }, 3000);
+                    window.location.href = 'https://customaccountingcpa.com/free-consultation/';
+                }, 1500);
             }
         }
 
