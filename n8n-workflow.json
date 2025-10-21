@@ -1,0 +1,268 @@
+{
+  "name": "Tax Quiz Lead Capture to Google Sheets",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "tax-quiz-leads",
+        "responseMode": "responseNode",
+        "options": {
+          "allowedOrigins": "*"
+        }
+      },
+      "id": "webhook-node",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "tax-quiz-webhook"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "timestamp",
+              "value": "={{ $json.timestamp }}"
+            },
+            {
+              "name": "firstName",
+              "value": "={{ $json.firstName }}"
+            },
+            {
+              "name": "lastName",
+              "value": "={{ $json.lastName }}"
+            },
+            {
+              "name": "email",
+              "value": "={{ $json.email }}"
+            },
+            {
+              "name": "phone",
+              "value": "={{ $json.phone || 'Not provided' }}"
+            },
+            {
+              "name": "company",
+              "value": "={{ $json.company || 'Not provided' }}"
+            },
+            {
+              "name": "revenue",
+              "value": "={{ $json.quizAnswers.revenue }}"
+            },
+            {
+              "name": "industry",
+              "value": "={{ $json.quizAnswers.industry }}"
+            },
+            {
+              "name": "taxApproach",
+              "value": "={{ $json.quizAnswers.taxApproach }}"
+            },
+            {
+              "name": "resultType",
+              "value": "={{ $json.resultType }}"
+            },
+            {
+              "name": "source",
+              "value": "={{ $json.source }}"
+            },
+            {
+              "name": "leadScore",
+              "value": "={{ \n  let score = 50;\n  \n  // Revenue scoring\n  if ($json.quizAnswers.revenue === '2m-5m') score += 20;\n  if ($json.quizAnswers.revenue === '5m-10m') score += 25;\n  if ($json.quizAnswers.revenue === 'over-10m') score += 30;\n  if ($json.quizAnswers.revenue && $json.quizAnswers.revenue.startsWith('other:')) score += 15;\n  \n  // Tax approach scoring\n  if ($json.quizAnswers.taxApproach === 'once-year') score += 30;\n  if ($json.quizAnswers.taxApproach === 'self-done') score += 35;\n  if ($json.quizAnswers.taxApproach === 'quarterly-reactive') score += 15;\n  if ($json.quizAnswers.taxApproach && $json.quizAnswers.taxApproach.startsWith('other:')) score += 25;\n  \n  // Industry scoring\n  if ($json.quizAnswers.industry === 'medical') score += 15;\n  if ($json.quizAnswers.industry === 'production') score += 20;\n  if ($json.quizAnswers.industry === 'services') score += 10;\n  \n  return Math.min(score, 100);\n}}"
+            },
+            {
+              "name": "priority",
+              "value": "={{ \n  let score = 50;\n  \n  // Calculate score (same as above)\n  if ($json.quizAnswers.revenue === '2m-5m') score += 20;\n  if ($json.quizAnswers.revenue === '5m-10m') score += 25;\n  if ($json.quizAnswers.revenue === 'over-10m') score += 30;\n  if ($json.quizAnswers.revenue && $json.quizAnswers.revenue.startsWith('other:')) score += 15;\n  \n  if ($json.quizAnswers.taxApproach === 'once-year') score += 30;\n  if ($json.quizAnswers.taxApproach === 'self-done') score += 35;\n  if ($json.quizAnswers.taxApproach === 'quarterly-reactive') score += 15;\n  if ($json.quizAnswers.taxApproach && $json.quizAnswers.taxApproach.startsWith('other:')) score += 25;\n  \n  if ($json.quizAnswers.industry === 'medical') score += 15;\n  if ($json.quizAnswers.industry === 'production') score += 20;\n  if ($json.quizAnswers.industry === 'services') score += 10;\n  \n  let finalScore = Math.min(score, 100);\n  \n  if (finalScore >= 85) return 'HOT';\n  if (finalScore >= 70) return 'HIGH';\n  if (finalScore >= 55) return 'MEDIUM';\n  return 'LOW';\n}}"
+            },
+            {
+              "name": "potentialSavings",
+              "value": "={{ \n  if ($json.resultType === 'high-opportunity') return '$50K-$100K annually';\n  if ($json.resultType === 'medium-opportunity') return '$15K-$50K annually';\n  return 'Optimization opportunities';\n}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-node",
+      "name": "Process Lead Data",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "resource": "sheet",
+        "operation": "appendOrUpdate",
+        "documentId": "YOUR_GOOGLE_SHEET_ID_HERE",
+        "sheetName": "Tax Quiz Leads",
+        "columnToMatchOn": "email",
+        "valueInputMode": "defineBelow",
+        "fieldsUi": {
+          "values": [
+            {
+              "column": "Timestamp",
+              "fieldValue": "={{ $json.timestamp }}"
+            },
+            {
+              "column": "First Name",
+              "fieldValue": "={{ $json.firstName }}"
+            },
+            {
+              "column": "Last Name",
+              "fieldValue": "={{ $json.lastName }}"
+            },
+            {
+              "column": "Email",
+              "fieldValue": "={{ $json.email }}"
+            },
+            {
+              "column": "Phone",
+              "fieldValue": "={{ $json.phone }}"
+            },
+            {
+              "column": "Company",
+              "fieldValue": "={{ $json.company }}"
+            },
+            {
+              "column": "Revenue",
+              "fieldValue": "={{ $json.revenue }}"
+            },
+            {
+              "column": "Industry",
+              "fieldValue": "={{ $json.industry }}"
+            },
+            {
+              "column": "Tax Approach",
+              "fieldValue": "={{ $json.taxApproach }}"
+            },
+            {
+              "column": "Result Type",
+              "fieldValue": "={{ $json.resultType }}"
+            },
+            {
+              "column": "Lead Score",
+              "fieldValue": "={{ $json.leadScore }}"
+            },
+            {
+              "column": "Priority",
+              "fieldValue": "={{ $json.priority }}"
+            },
+            {
+              "column": "Potential Savings",
+              "fieldValue": "={{ $json.potentialSavings }}"
+            },
+            {
+              "column": "Source",
+              "fieldValue": "={{ $json.source }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "google-sheets-node",
+      "name": "Add to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [680, 300],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "google-sheets-credentials",
+          "name": "Google Sheets Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "to": "team@customaccountingcpa.com",
+        "subject": "🔥 {{ $('Process Lead Data').item.json.priority }} Priority Lead - {{ $('Process Lead Data').item.json.firstName }} {{ $('Process Lead Data').item.json.lastName }}",
+        "emailFormat": "html",
+        "message": "<!DOCTYPE html>\n<html>\n<head>\n    <style>\n        body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }\n        .header { background: linear-gradient(135deg, #003366 0%, #0066cc 100%); color: white; padding: 20px; text-align: center; }\n        .content { padding: 20px; }\n        .lead-info { background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0; }\n        .priority-hot { color: #dc3545; font-weight: bold; }\n        .priority-high { color: #fd7e14; font-weight: bold; }\n        .priority-medium { color: #ffc107; font-weight: bold; }\n        .priority-low { color: #28a745; font-weight: bold; }\n        .cta { background: #0066cc; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 10px 0; }\n    </style>\n</head>\n<body>\n    <div class=\"header\">\n        <h1>🎯 New Tax Quiz Lead!</h1>\n    </div>\n    <div class=\"content\">\n        <div class=\"lead-info\">\n            <h2>Contact Information</h2>\n            <p><strong>Name:</strong> {{ $('Process Lead Data').item.json.firstName }} {{ $('Process Lead Data').item.json.lastName }}</p>\n            <p><strong>Email:</strong> {{ $('Process Lead Data').item.json.email }}</p>\n            <p><strong>Phone:</strong> {{ $('Process Lead Data').item.json.phone }}</p>\n            <p><strong>Company:</strong> {{ $('Process Lead Data').item.json.company }}</p>\n        </div>\n        \n        <div class=\"lead-info\">\n            <h2>Quiz Results</h2>\n            <p><strong>Revenue:</strong> {{ $('Process Lead Data').item.json.revenue }}</p>\n            <p><strong>Industry:</strong> {{ $('Process Lead Data').item.json.industry }}</p>\n            <p><strong>Current Tax Approach:</strong> {{ $('Process Lead Data').item.json.taxApproach }}</p>\n            <p><strong>Result Type:</strong> {{ $('Process Lead Data').item.json.resultType }}</p>\n            <p><strong>Potential Savings:</strong> {{ $('Process Lead Data').item.json.potentialSavings }}</p>\n        </div>\n        \n        <div class=\"lead-info\">\n            <h2>Lead Intelligence</h2>\n            <p><strong>Lead Score:</strong> {{ $('Process Lead Data').item.json.leadScore }}/100</p>\n            <p><strong>Priority:</strong> <span class=\"priority-{{ $('Process Lead Data').item.json.priority.toLowerCase() }}\">{{ $('Process Lead Data').item.json.priority }}</span></p>\n            <p><strong>Submitted:</strong> {{ $('Process Lead Data').item.json.timestamp }}</p>\n        </div>\n        \n        <div class=\"lead-info\">\n            <h2>Next Steps</h2>\n            <ul>\n                <li>⏰ Follow up within 1 hour for HOT leads</li>\n                <li>📞 Call first, then email</li>\n                <li>📋 Reference their quiz answers in conversation</li>\n                <li>🎯 Focus on their {{ $('Process Lead Data').item.json.potentialSavings }} savings potential</li>\n            </ul>\n        </div>\n        \n        <p><em>Lead captured via Tax Savings Quiz Funnel</em></p>\n    </div>\n</body>\n</html>",
+        "options": {}
+      },
+      "id": "email-node",
+      "name": "Send Team Notification",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [680, 480],
+      "credentials": {
+        "smtp": {
+          "id": "smtp-credentials",
+          "name": "SMTP Account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\n  \"status\": \"success\",\n  \"message\": \"Lead captured successfully\",\n  \"leadId\": \"{{ $('Process Lead Data').item.json.timestamp }}\",\n  \"priority\": \"{{ $('Process Lead Data').item.json.priority }}\",\n  \"leadScore\": {{ $('Process Lead Data').item.json.leadScore }}\n}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Methods",
+                "value": "POST, OPTIONS"
+              },
+              {
+                "name": "Access-Control-Allow-Headers",
+                "value": "Content-Type"
+              }
+            ]
+          }
+        }
+      },
+      "id": "respond-node",
+      "name": "Respond to Quiz",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [900, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Process Lead Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process Lead Data": {
+      "main": [
+        [
+          {
+            "node": "Add to Google Sheets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Team Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add to Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Respond to Quiz",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "timezone": "America/New_York"
+  },
+  "versionId": "1"
+}

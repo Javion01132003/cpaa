@@ -871,8 +871,8 @@
                 // Always save to localStorage first
                 localStorage.setItem('quizLead_' + Date.now(), JSON.stringify(leadData));
                 
-                // Send to Zapier webhook
-                const webhookUrl = 'https://hooks.zapier.com/hooks/catch/16479429/urzc4x0/';
+                // Send to n8n webhook - replace with your actual n8n webhook URL
+                const webhookUrl = 'YOUR_N8N_WEBHOOK_URL_HERE';
                 
                 const response = await fetch(webhookUrl, {
                     method: 'POST',
@@ -882,10 +882,10 @@
                     body: JSON.stringify(leadData)
                 });
                 
-                console.log('Zapier response status:', response.status);
-                console.log('Zapier response:', await response.text());
+                console.log('n8n response status:', response.status);
+                console.log('n8n response:', await response.text());
                 
-                // Show success even if Zapier fails (data is saved locally)
+                // Show success even if n8n fails (data is saved locally)
                 submitBtn.textContent = 'Success! Redirecting...';
                 submitBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
                 
