@@ -4,16 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tax Savings Quiz | Custom Accounting CPA</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <meta http-equiv="refresh" content="0; url=quiz-simple.html">
+    <style>
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #003366 0%, #0066cc 100%);
+            color: white;
+            text-align: center;
+        }
+        .redirect-message {
+            max-width: 500px;
+            padding: 2rem;
+        }
+        .redirect-message h1 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        .redirect-message a {
+            color: #00aaff;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .redirect-message a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <div id="root"></div>
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    <script src="app.js"></script>
+    <div class="redirect-message">
+        <h1>Redirecting to Tax Savings Quiz...</h1>
+        <p>If you're not redirected automatically, <a href="quiz-simple.html">click here to start the quiz</a>.</p>
+    </div>
+    
+    <script>
+        // Immediate redirect for better UX
+        window.location.href = 'quiz-simple.html';
+    </script>
 </body>
 </html>
 
