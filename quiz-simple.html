@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Savings Quiz | Custom Accounting CPA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: #f5f5f5;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #0066cc, #00aaff);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .landing-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #003366 0%, #0066cc 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .landing-content {
+            max-width: 600px;
+        }
+
+        .landing-page h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        /* Light gradient for dark backgrounds (landing page) */
+        .gradient-text {
+            background: linear-gradient(90deg, #00aaff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        /* Darker gradient for better readability on white backgrounds */
+        .results-content .gradient-text {
+            background: linear-gradient(90deg, #003366, #0066cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+
+        .landing-page .subheadline {
+            font-size: 1.125rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+            font-weight: 500;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0, 102, 204, 0.4);
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            min-height: 56px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .cta-button:hover {
+            background: linear-gradient(135deg, #004d99 0%, #0066cc 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 102, 204, 0.5);
+        }
+
+        .trust-badges {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            opacity: 0.7;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .question-page {
+            min-height: 100vh;
+            padding: 5rem 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .question-container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #0066cc;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 2rem;
+            line-height: 1.3;
+        }
+
+        .answer-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .answer-card {
+            background: white;
+            padding: 1.25rem 1.5rem;
+            border-radius: 16px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            font-size: 1rem;
+            font-weight: 500;
+            color: #1a1a1a;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-height: 64px;
+            position: relative;
+        }
+
+        .answer-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 102, 204, 0.15);
+            border-color: rgba(0, 102, 204, 0.3);
+        }
+
+        .answer-card.selected {
+            border-color: #0066cc;
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.05) 0%, rgba(0, 170, 255, 0.05) 100%);
+            box-shadow: 0 4px 20px rgba(0, 102, 204, 0.2);
+            transform: scale(1.02);
+        }
+
+        .answer-card.selected::after {
+            content: '✓';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #0066cc;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .next-button {
+            background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 102, 204, 0.3);
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+            max-width: 600px;
+            min-height: 56px;
+            display: none;
+        }
+
+        .next-button.show {
+            display: block;
+        }
+
+        .next-button:hover {
+            background: linear-gradient(135deg, #004d99 0%, #0066cc 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 102, 204, 0.4);
+        }
+
+        .back-button {
+            background: transparent;
+            color: #666;
+            border: none;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: color 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            border-radius: 8px;
+        }
+
+        .back-button:hover {
+            color: #0066cc;
+            background: rgba(0, 102, 204, 0.05);
+        }
+
+        .other-option {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .other-option.active {
+            border-color: #0066cc;
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.05) 0%, rgba(0, 170, 255, 0.05) 100%);
+        }
+
+        .other-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            margin-top: 0.5rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .other-input:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .other-label {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .email-capture {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            margin: 2rem 0;
+            border: 2px solid #0066cc;
+        }
+
+        .email-capture h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .email-capture p {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .email-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-field {
+            flex: 1;
+        }
+
+        .form-field label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-field input {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-field input:focus {
+            outline: none;
+            border-color: #0066cc;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .form-field input:required {
+            border-color: #0066cc;
+        }
+
+        .email-submit {
+            background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .email-submit:hover {
+            background: linear-gradient(135deg, #004d99 0%, #0066cc 100%);
+            transform: translateY(-1px);
+        }
+
+        .email-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+        }
+
+        .results-page {
+            min-height: 100vh;
+            padding: 5rem 1.5rem 2rem;
+        }
+
+        .results-header {
+            background: linear-gradient(135deg, #003366 0%, #0066cc 100%);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 24px 24px 0 0;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .results-header::before {
+            content: '🎉';
+            position: absolute;
+            top: 1rem;
+            right: 2rem;
+            font-size: 3rem;
+        }
+
+        .results-header h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .results-content {
+            background: white;
+            padding: 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            border-radius: 0 0 24px 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        .results-cta {
+            background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%);
+            color: white;
+            border: none;
+            padding: 1.25rem 2.5rem;
+            font-size: 1.125rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(0, 102, 204, 0.4);
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+            min-height: 64px;
+            margin-top: 2rem;
+        }
+
+        .results-cta:hover {
+            background: linear-gradient(135deg, #004d99 0%, #0066cc 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 102, 204, 0.5);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .landing-page h1 { font-size: 2rem; }
+            .question-title { font-size: 1.5rem; }
+            .results-header h1 { font-size: 1.75rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- Landing Page -->
+        <div id="landing" class="page active">
+            <div class="landing-page">
+                <div class="landing-content">
+                    <h1>How Much Are You <span class="gradient-text">Overpaying</span> in Taxes?</h1>
+                    <p class="subheadline">
+                        Take this <span class="gradient-text">90-second quiz</span> to discover your potential annual savings. 
+                        Most business owners between $2M-$8M overpay by <span class="gradient-text">$50K-$100K annually</span>.
+                    </p>
+                    <button class="cta-button" onclick="startQuiz()">START QUIZ →</button>
+                    <div class="trust-badges">
+                        <div>✓ 90 seconds</div>
+                        <div>✓ Free analysis</div>
+                        <div>✓ Instant results</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 1 -->
+        <div id="question1" class="page">
+            <div class="question-page">
+                <div class="question-container">
+                    <span class="question-number">1 of 3</span>
+                    <h2 class="question-title">What's your approximate annual revenue?</h2>
+                    <div class="answer-cards">
+                        <button class="answer-card" onclick="selectAnswer('q1', 'under-2m', this)">Under $2M</button>
+                        <button class="answer-card" onclick="selectAnswer('q1', '2m-5m', this)">$2M - $5M</button>
+                        <button class="answer-card" onclick="selectAnswer('q1', '5m-10m', this)">$5M - $10M</button>
+                        <button class="answer-card" onclick="selectAnswer('q1', 'over-10m', this)">Over $10M</button>
+                    </div>
+                    <div class="other-option" id="other-q1">
+                        <div class="other-label">Other (please specify):</div>
+                        <input type="text" class="other-input" id="other-input-q1" placeholder="e.g., $15M, varies by year, etc." 
+                               onclick="selectOtherAnswer('q1')" oninput="handleOtherInput('q1', this.value)">
+                    </div>
+                    <button class="next-button" id="next1" onclick="nextQuestion(2)">Next →</button>
+                    <button class="back-button" onclick="goBack(0)">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div id="question2" class="page">
+            <div class="question-page">
+                <div class="question-container">
+                    <span class="question-number">2 of 3</span>
+                    <h2 class="question-title">Which industry best describes your business?</h2>
+                    <div class="answer-cards">
+                        <button class="answer-card" onclick="selectAnswer('q2', 'medical', this)">🏥 Medical/Healthcare (practices, labs, clinics)</button>
+                        <button class="answer-card" onclick="selectAnswer('q2', 'production', this)">🏭 Production/Manufacturing</button>
+                        <button class="answer-card" onclick="selectAnswer('q2', 'services', this)">🔧 Multi-location Services (HVAC, plumbing, etc.)</button>
+                        <button class="answer-card" onclick="selectAnswer('q2', 'professional', this)">💼 Professional Services</button>
+                    </div>
+                    <div class="other-option" id="other-q2">
+                        <div class="other-label">Other industry (please specify):</div>
+                        <input type="text" class="other-input" id="other-input-q2" placeholder="e.g., Real Estate, Technology, Retail, etc." 
+                               onclick="selectOtherAnswer('q2')" oninput="handleOtherInput('q2', this.value)">
+                    </div>
+                    <button class="next-button" id="next2" onclick="nextQuestion(3)">Next →</button>
+                    <button class="back-button" onclick="goBack(1)">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div id="question3" class="page">
+            <div class="question-page">
+                <div class="question-container">
+                    <span class="question-number">3 of 3</span>
+                    <h2 class="question-title">How does your CPA currently work with you?</h2>
+                    <div class="answer-cards">
+                        <button class="answer-card" onclick="selectAnswer('q3', 'once-year', this)">Once a year at tax time only</button>
+                        <button class="answer-card" onclick="selectAnswer('q3', 'quarterly-reactive', this)">Quarterly check-ins but mostly reactive</button>
+                        <button class="answer-card" onclick="selectAnswer('q3', 'strategic', this)">Strategic quarterly planning sessions</button>
+                        <button class="answer-card" onclick="selectAnswer('q3', 'self-done', this)">I do my own taxes or not sure</button>
+                    </div>
+                    <div class="other-option" id="other-q3">
+                        <div class="other-label">Other situation (please describe):</div>
+                        <input type="text" class="other-input" id="other-input-q3" placeholder="e.g., Working with bookkeeper only, changing CPAs, etc." 
+                               onclick="selectOtherAnswer('q3')" oninput="handleOtherInput('q3', this.value)">
+                    </div>
+                    <button class="next-button" id="next3" onclick="showResults()">See My Results →</button>
+                    <button class="back-button" onclick="goBack(2)">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="page">
+            <div class="results-page">
+                <div class="results-header">
+                    <h1 id="resultsTitle">You're Likely Overpaying by <span class="gradient-text">$50K-$100K</span> Annually</h1>
+                    <p id="resultsSubtitle">Based on your answers, you fit the profile of business owners we've helped save the most money.</p>
+                </div>
+                <div class="results-content">
+                    <div id="resultsContent">
+                        <p style="font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
+                            Your business size puts you in the sweet spot for maximum tax savings. Your current approach means you're likely missing significant opportunities throughout the year.
+                        </p>
+                        <p style="text-align: center; background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin: 2rem 0;">
+                            Stephen Evans saved <span class="gradient-text">$95,000 annually</span> after switching to strategic quarterly planning—that's a <span class="gradient-text">760% ROI</span>.
+                        </p>
+                    </div>
+                    
+                    <div class="email-capture">
+                        <h3>Get Your Personalized Tax Strategy</h3>
+                        <p>Enter your details below to book your free consultation and receive a custom tax savings analysis based on your quiz answers.</p>
+                        <form class="email-form" id="leadForm" onsubmit="submitLead(event)">
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="form-field">
+                                    <label for="lastName">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" required>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label for="email">Email Address *</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-field">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" name="phone" placeholder="(555) 123-4567">
+                                </div>
+                            </div>
+                            <div class="form-field">
+                                <label for="company">Company Name</label>
+                                <input type="text" id="company" name="company" placeholder="Your business name">
+                            </div>
+                            <button type="submit" class="email-submit" id="submitBtn">
+                                Book Your Free Strategy Call →
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        let answers = {};
+
+        function updateProgress() {
+            const progress = currentStep === 0 ? 0 : currentStep === 1 ? 33 : currentStep === 2 ? 66 : 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function startQuiz() {
+            currentStep = 1;
+            updateProgress();
+            showPage('question1');
+        }
+
+        function selectAnswer(question, value, element) {
+            answers[question] = value;
+            
+            // Remove selected class from siblings
+            element.parentNode.querySelectorAll('.answer-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked element
+            element.classList.add('selected');
+            
+            // Clear other input and remove active state
+            const otherOption = document.getElementById(`other-${question}`);
+            const otherInput = document.getElementById(`other-input-${question}`);
+            if (otherOption && otherInput) {
+                otherOption.classList.remove('active');
+                otherInput.value = '';
+            }
+            
+            // Auto-advance after a short delay for visual feedback
+            setTimeout(() => {
+                if (question === 'q1') {
+                    nextQuestion(2);
+                } else if (question === 'q2') {
+                    nextQuestion(3);
+                } else if (question === 'q3') {
+                    showResults();
+                }
+            }, 600); // 600ms delay for smooth transition
+        }
+
+        function selectOtherAnswer(question) {
+            // Remove selected class from all answer cards
+            document.querySelectorAll(`#question${question.slice(-1)} .answer-card`).forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Activate other option
+            const otherOption = document.getElementById(`other-${question}`);
+            otherOption.classList.add('active');
+        }
+
+        function handleOtherInput(question, value) {
+            if (value.trim()) {
+                answers[question] = `other: ${value.trim()}`;
+                
+                // Show next button with "Continue" text for other inputs
+                const questionNum = question.slice(-1);
+                const nextButton = document.getElementById(`next${questionNum}`);
+                if (nextButton) {
+                    nextButton.classList.add('show');
+                    if (questionNum === '3') {
+                        nextButton.textContent = 'See My Results →';
+                    } else {
+                        nextButton.textContent = 'Continue →';
+                    }
+                }
+            } else {
+                // Hide next button if input is empty
+                const questionNum = question.slice(-1);
+                const nextButton = document.getElementById(`next${questionNum}`);
+                if (nextButton) {
+                    nextButton.classList.remove('show');
+                }
+            }
+        }
+
+        function goBack(step) {
+            if (step === 0) {
+                currentStep = 0;
+                showPage('landing');
+            } else {
+                currentStep = step;
+                showPage('question' + step);
+            }
+            updateProgress();
+        }
+
+        function nextQuestion(step) {
+            currentStep = step;
+            updateProgress();
+            showPage('question' + step);
+        }
+
+        function showResults() {
+            currentStep = 4;
+            updateProgress();
+            
+            // Determine result type based on Q3 answer
+            const taxApproach = answers.q3;
+            let resultType = 'high';
+            
+            if (taxApproach === 'quarterly-reactive') {
+                resultType = 'medium';
+            } else if (taxApproach === 'strategic') {
+                resultType = 'low';
+            }
+            
+            // Update results content
+            updateResultsContent(resultType);
+            showPage('results');
+            
+            // Log completion
+            console.log('Quiz Completed:', {
+                ...answers,
+                resultType,
+                timestamp: new Date().toISOString()
+            });
+        }
+
+        function updateResultsContent(type) {
+            const title = document.getElementById('resultsTitle');
+            const subtitle = document.getElementById('resultsSubtitle');
+            const content = document.getElementById('resultsContent');
+            
+            if (type === 'medium') {
+                title.innerHTML = 'You Could Be Saving <span class="gradient-text">$15K-$50K</span> More Annually';
+                subtitle.textContent = 'You\'re doing better than most—but there\'s room for improvement.';
+                content.innerHTML = `
+                    <p style="font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
+                        You're doing better than most—but there's a difference between quarterly meetings and strategic quarterly planning. 
+                        Most CPAs are reactive. Strategic planning means proactively finding opportunities.
+                    </p>
+                    <p style="text-align: center; background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin: 2rem 0;">
+                        Hillary Cutter saved <span class="gradient-text">$40,000+ annually</span> by upgrading to strategic quarterly planning—that's a <span class="gradient-text">243% ROI</span>.
+                    </p>
+                `;
+            } else if (type === 'low') {
+                title.textContent = 'You\'re Ahead of Most Business Owners';
+                subtitle.textContent = 'You already have strategic quarterly planning—that puts you in the top 10%.';
+                content.innerHTML = `
+                    <p style="font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
+                        You're already doing strategic quarterly planning, which means you're ahead of 90% of business owners. 
+                        But even the best strategies need periodic review to ensure you're capturing new opportunities.
+                    </p>
+                `;
+                document.querySelector('.results-cta').textContent = 'Book Your Complimentary Review →';
+            }
+        }
+
+        function bookConsultation() {
+            console.log('Booking button clicked - Conversion event');
+            window.location.href = 'https://customaccountingcpa.com/free-consultation/';
+        }
+
+        async function submitLead(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
+            
+            // Disable button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            // Collect form data
+            const formData = new FormData(event.target);
+            const leadData = {
+                // Contact Information
+                firstName: formData.get('firstName'),
+                lastName: formData.get('lastName'),
+                email: formData.get('email'),
+                phone: formData.get('phone') || '',
+                company: formData.get('company') || '',
+                
+                // Quiz Answers
+                quizAnswers: {
+                    revenue: answers.q1,
+                    industry: answers.q2,
+                    taxApproach: answers.q3
+                },
+                
+                // Metadata
+                resultType: getResultType(answers.q3),
+                timestamp: new Date().toISOString(),
+                source: 'tax-savings-quiz',
+                userAgent: navigator.userAgent,
+                referrer: document.referrer || 'direct'
+            };
+            
+            console.log('Lead Data:', leadData);
+            
+            try {
+                // Send to Zapier webhook
+                const webhookUrl = 'https://hooks.zapier.com/hooks/catch/16479429/urzc4x0/';
+                
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(leadData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                
+                // For now, just log to console and localStorage
+                localStorage.setItem('quizLead_' + Date.now(), JSON.stringify(leadData));
+                
+                // Show success and redirect
+                submitBtn.textContent = 'Success! Redirecting...';
+                submitBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                
+                setTimeout(() => {
+                    window.location.href = 'https://customaccountingcpa.com/free-consultation/';
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Error submitting lead:', error);
+                
+                // Show error state
+                submitBtn.textContent = 'Error - Try Again';
+                submitBtn.style.background = 'linear-gradient(135deg, #dc3545 0%, #fd7e14 100%)';
+                submitBtn.disabled = false;
+                
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                    submitBtn.textContent = originalText;
+                    submitBtn.style.background = 'linear-gradient(135deg, #0066cc 0%, #0099ff 100%)';
+                }, 3000);
+            }
+        }
+
+        function getResultType(taxApproach) {
+            if (taxApproach === 'once-year' || taxApproach === 'self-done' || (taxApproach && taxApproach.startsWith('other:'))) {
+                return 'high-opportunity';
+            } else if (taxApproach === 'quarterly-reactive') {
+                return 'medium-opportunity';
+            } else {
+                return 'low-opportunity';
+            }
+        }
+
+        // Initialize
+        updateProgress();
+    </script>
+</body>
+</html>

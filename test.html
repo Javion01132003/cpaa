@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+            background: linear-gradient(135deg, #003366 0%, #0066cc 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .test-content {
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #00aaff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        button {
+            background: linear-gradient(135deg, #0066cc 0%, #0099ff 100%);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 1rem;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #004d99 0%, #0066cc 100%);
+        }
+    </style>
+</head>
+<body>
+    <div class="test-content">
+        <h1>How Much Are You <span class="gradient-text">Overpaying</span> in Taxes?</h1>
+        <p>Take this <span class="gradient-text">90-second quiz</span> to discover your potential annual savings.</p>
+        <button onclick="startQuiz()">START QUIZ →</button>
+        <div id="status" style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.8;"></div>
+    </div>
+
+    <script>
+        function startQuiz() {
+            document.getElementById('status').innerHTML = 'Quiz functionality working! ✓';
+            setTimeout(() => {
+                window.location.href = 'https://customaccountingcpa.com/free-consultation/';
+            }, 1000);
+        }
+        
+        // Test if basic functionality works
+        document.getElementById('status').innerHTML = 'Page loaded successfully ✓';
+    </script>
+</body>
+</html>
