@@ -1009,7 +1009,7 @@
                 localStorage.setItem('quizLead_' + Date.now(), JSON.stringify(leadData));
                 
                 // Send to n8n webhook
-                const webhookUrl = 'https://savanttttttt.app.n8n.cloud/webhook-test/tax-quiz-leads';
+                const webhookUrl = 'https://savanttttttt.app.n8n.cloud/webhook/tax-quiz-leads';
                 
                 const response = await fetch(webhookUrl, {
                     method: 'POST',
