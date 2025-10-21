@@ -85,9 +85,18 @@
             line-height: 1.2;
         }
 
-        /* Light gradient for dark backgrounds (landing page) */
+        /* Light gradient for dark backgrounds (landing page and results header) */
         .gradient-text {
             background: linear-gradient(90deg, #00aaff, #00ffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
+        }
+        
+        /* Light gradient for results header (on blue background) */
+        .results-header .gradient-text {
+            background: linear-gradient(90deg, #00ffff, #ffffff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -426,24 +435,22 @@
             position: relative;
         }
 
-        .results-header::before {
-            content: '🎉';
-            position: absolute;
-            top: 1rem;
-            right: 2rem;
-            font-size: 3rem;
-        }
-
         .results-header h1 {
             font-size: 2rem;
             font-weight: 700;
-            color: white;
+            color: white !important;
             margin-bottom: 1rem;
             line-height: 1.2;
         }
         
-        .results-header .subheadline {
-            color: white;
+        .results-header p {
+            color: white !important;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        #resultsSubtitle {
+            color: white !important;
         }
 
         .results-content {
