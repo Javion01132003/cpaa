@@ -7,6 +7,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "ttu5mnu3pv");
+    </script>
     <style>
         * {
             margin: 0;
@@ -316,14 +325,14 @@
         .email-capture h3 {
             font-size: 1.25rem;
             font-weight: 700;
-            color: #1a1a1a;
+            color: #003366;
             margin-bottom: 0.5rem;
             text-align: center;
         }
 
         .email-capture p {
             font-size: 0.95rem;
-            color: #666;
+            color: #333;
             margin-bottom: 1.5rem;
             text-align: center;
             line-height: 1.5;
@@ -348,7 +357,7 @@
             display: block;
             font-size: 0.875rem;
             font-weight: 600;
-            color: #1a1a1a;
+            color: #003366;
             margin-bottom: 0.5rem;
         }
 
@@ -431,6 +440,10 @@
             color: white;
             margin-bottom: 1rem;
             line-height: 1.2;
+        }
+        
+        .results-header .subheadline {
+            color: white;
         }
 
         .results-content {
@@ -647,6 +660,10 @@
         }
 
         function selectAnswer(question, value, element) {
+            // Store the previous answer
+            const previousAnswer = answers[question];
+            
+            // Update answer
             answers[question] = value;
             
             // Remove selected class from siblings
@@ -666,6 +683,7 @@
             }
             
             // Auto-advance after a short delay for visual feedback
+            // Always advance, even if same answer clicked
             setTimeout(() => {
                 if (question === 'q1') {
                     nextQuestion(2);
