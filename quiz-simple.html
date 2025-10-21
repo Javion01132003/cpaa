@@ -16,6 +16,25 @@
             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
         })(window, document, "clarity", "script", "ttu5mnu3pv");
     </script>
+    
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', 'YOUR_FACEBOOK_PIXEL_ID_HERE');
+        fbq('track', 'PageView');
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=YOUR_FACEBOOK_PIXEL_ID_HERE&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
     <style>
         * {
             margin: 0;
@@ -495,6 +514,111 @@
             .question-title { font-size: 1.5rem; }
             .results-header h1 { font-size: 1.75rem; }
         }
+
+        /* Cookie Consent Banner */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 51, 102, 0.98);
+            color: white;
+            padding: 1.5rem;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            display: none;
+        }
+
+        .cookie-banner.show {
+            display: block;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .cookie-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .cookie-text {
+            flex: 1;
+            min-width: 300px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .cookie-text a {
+            color: #00aaff;
+            text-decoration: underline;
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .cookie-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .cookie-accept {
+            background: #00aaff;
+            color: white;
+        }
+
+        .cookie-accept:hover {
+            background: #0099dd;
+        }
+
+        .cookie-decline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .cookie-decline:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .quiz-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.75rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: #666;
+            z-index: 100;
+            border-top: 1px solid #eee;
+        }
+
+        .quiz-footer a {
+            color: #0066cc;
+            text-decoration: none;
+            margin: 0 0.75rem;
+        }
+
+        .quiz-footer a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -664,6 +788,11 @@
             currentStep = 1;
             updateProgress();
             showPage('question1');
+            
+            // Facebook Pixel: Track quiz start
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'StartTrial'); // Or use custom event 'QuizStart'
+            }
         }
 
         function selectAnswer(question, value, element) {
@@ -783,6 +912,14 @@
                 resultType,
                 timestamp: new Date().toISOString()
             });
+            
+            // Facebook Pixel: Track quiz completion
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'CompleteRegistration', {
+                    content_name: 'Tax Quiz Completed',
+                    status: resultType
+                });
+            }
         }
 
         function updateResultsContent(type) {
@@ -889,6 +1026,15 @@
                 submitBtn.textContent = 'Success! Redirecting...';
                 submitBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
                 
+                // Facebook Pixel: Track lead submission
+                if (typeof fbq !== 'undefined') {
+                    fbq('track', 'Lead', {
+                        content_name: 'Tax Quiz Lead',
+                        value: leadData.leadScore || 0,
+                        currency: 'USD'
+                    });
+                }
+                
                 setTimeout(() => {
                     window.location.href = 'https://customaccountingcpa.com/free-consultation/';
                 }, 1500);
@@ -922,6 +1068,61 @@
 
         // Initialize
         updateProgress();
+        
+        // Cookie Consent Handler
+        function showCookieBanner() {
+            const cookieConsent = localStorage.getItem('cookieConsent');
+            if (!cookieConsent) {
+                setTimeout(() => {
+                    document.getElementById('cookieBanner').classList.add('show');
+                }, 1000);
+            }
+        }
+        
+        function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            document.getElementById('cookieBanner').classList.remove('show');
+            
+            // Initialize Facebook Pixel if user accepts
+            if (typeof fbq !== 'undefined') {
+                fbq('consent', 'grant');
+            }
+        }
+        
+        function declineCookies() {
+            localStorage.setItem('cookieConsent', 'declined');
+            document.getElementById('cookieBanner').classList.remove('show');
+            
+            // Revoke Facebook Pixel consent
+            if (typeof fbq !== 'undefined') {
+                fbq('consent', 'revoke');
+            }
+        }
+        
+        // Show banner on page load
+        showCookieBanner();
     </script>
+    
+    <!-- Cookie Consent Banner -->
+    <div id="cookieBanner" class="cookie-banner">
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <strong>🍪 We use cookies</strong><br>
+                We use cookies and similar technologies to improve your experience, analyze site traffic, and show personalized content. By clicking "Accept", you consent to our use of cookies and tracking technologies including Facebook Pixel and Microsoft Clarity.
+                <a href="https://customaccountingcpa.com/privacy-policy/" target="_blank">Learn more</a>
+            </div>
+            <div class="cookie-buttons">
+                <button class="cookie-btn cookie-accept" onclick="acceptCookies()">Accept All</button>
+                <button class="cookie-btn cookie-decline" onclick="declineCookies()">Decline</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="quiz-footer">
+        © 2024 Custom Accounting CPA. All Rights Reserved.
+        <a href="https://customaccountingcpa.com/privacy-policy/" target="_blank">Privacy Policy</a> |
+        <a href="https://customaccountingcpa.com/terms-conditions/" target="_blank">Terms & Conditions</a>
+    </div>
 </body>
 </html>
