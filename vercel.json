@@ -1,19 +1,14 @@
 {
-  "routes": [
+  "rewrites": [
     {
-      "src": "/",
-      "dest": "/quiz-simple.html"
+      "source": "/",
+      "destination": "/quiz-simple.html"
     },
     {
-      "src": "/quiz",
-      "dest": "/quiz-simple.html"
-    },
-    {
-      "src": "/quiz-simple.html",
-      "dest": "/quiz-simple.html"
+      "source": "/quiz",
+      "destination": "/quiz-simple.html"
     }
   ],
-  "functions": {},
   "headers": [
     {
       "source": "/(.*)",
