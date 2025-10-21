@@ -769,9 +769,13 @@
                 resultType = 'low';
             }
             
-            // Update results content
-            updateResultsContent(resultType);
+            // Show page first
             showPage('results');
+            
+            // Then update content after page is visible
+            setTimeout(() => {
+                updateResultsContent(resultType);
+            }, 50);
             
             // Log completion
             console.log('Quiz Completed:', {
@@ -785,6 +789,13 @@
             const title = document.getElementById('resultsTitle');
             const subtitle = document.getElementById('resultsSubtitle');
             const content = document.getElementById('resultsContent');
+            const ctaButton = document.querySelector('.results-cta');
+            
+            // Safety check - make sure elements exist
+            if (!title || !subtitle || !content) {
+                console.error('Results elements not found');
+                return;
+            }
             
             if (type === 'medium') {
                 title.innerHTML = 'You Could Be Saving <span class="gradient-text">$15K-$50K</span> More Annually';
@@ -807,7 +818,10 @@
                         But even the best strategies need periodic review to ensure you're capturing new opportunities.
                     </p>
                 `;
-                document.querySelector('.results-cta').textContent = 'Book Your Complimentary Review →';
+                // Update button text only if button exists
+                if (ctaButton) {
+                    ctaButton.textContent = 'Book Your Complimentary Review →';
+                }
             }
         }
 
