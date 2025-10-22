@@ -1503,6 +1503,127 @@ Source: ${leadData.source}
         // Make it accessible from console: downloadAllLeads()
         window.downloadAllLeads = downloadAllLeads;
         
+        // Show calendar popup immediately after form submission
+        function showCalendarPopup(auditData) {
+            // Create popup overlay
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                z-index: 10000;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 20px;
+            `;
+            
+            // Create popup content
+            const popup = document.createElement('div');
+            popup.style.cssText = `
+                background: white;
+                border-radius: 12px;
+                padding: 30px;
+                max-width: 600px;
+                width: 100%;
+                max-height: 90vh;
+                overflow-y: auto;
+                position: relative;
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            `;
+            
+            // Success message
+            popup.innerHTML = `
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 48px; margin-bottom: 10px;">🎉</div>
+                    <h2 style="color: #008080; margin-bottom: 10px; font-family: 'Merriweather', serif;">Your Report is Being Prepared!</h2>
+                    <p style="color: #666; margin-bottom: 20px;">You'll receive your personalized Tax Savings Audit at <strong>${auditData.email}</strong> within the next 5 minutes.</p>
+                </div>
+                
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #008080; margin-bottom: 10px;">Your Preliminary Analysis:</h3>
+                    <p><strong>Taxable Income:</strong> $${auditData.taxableIncome.toLocaleString()}</p>
+                    <p><strong>Tax Paid:</strong> $${auditData.taxPaid.toLocaleString()}</p>
+                    <p><strong>Effective Tax Rate:</strong> ${auditData.effectiveTaxRate}%</p>
+                    <p><strong>Estimated Annual Savings:</strong> <span style="color: #008080; font-weight: bold;">$${auditData.estimatedSavings.toLocaleString()}</span></p>
+                </div>
+                
+                <div style="text-align: center;">
+                    <h3 style="color: #008080; margin-bottom: 15px;">Want to Discuss Your Results?</h3>
+                    <p style="color: #666; margin-bottom: 20px;">Book your FREE 30-minute strategy call below. Your report details are already loaded for our CPA to review before the call.</p>
+                    
+                    <!-- Calendly inline widget -->
+                    <div class="calendly-inline-widget" 
+                         data-url="https://calendly.com/genz-investorr/custom-accounting-cpa?name=${encodeURIComponent(auditData.name)}&email=${encodeURIComponent(auditData.email)}&a1=Revenue: ${encodeURIComponent(auditData.revenue)}&a2=Industry: ${encodeURIComponent(auditData.industry)}&a3=Tax Rate: ${auditData.effectiveTaxRate}%&a4=Potential Savings: $${auditData.estimatedSavings}&hide_gdpr_banner=1&primary_color=008080"
+                         style="min-width:320px;height:600px;">
+                    </div>
+                    
+                    <button onclick="this.closest('.calendar-popup').remove()" style="
+                        background: #666;
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        margin-top: 15px;
+                        font-family: 'Montserrat', sans-serif;
+                    ">Close</button>
+                </div>
+            `;
+            
+            // Add close button
+            const closeBtn = document.createElement('button');
+            closeBtn.innerHTML = '×';
+            closeBtn.style.cssText = `
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                background: none;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+                color: #666;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                transition: background 0.2s;
+            `;
+            closeBtn.onclick = () => overlay.remove();
+            closeBtn.onmouseover = () => closeBtn.style.background = '#f0f0f0';
+            closeBtn.onmouseout = () => closeBtn.style.background = 'none';
+            
+            popup.appendChild(closeBtn);
+            overlay.appendChild(popup);
+            document.body.appendChild(overlay);
+            
+            // Load Calendly script if not already loaded
+            if (!document.querySelector('script[src*="calendly.com"]')) {
+                const script = document.createElement('script');
+                script.src = 'https://assets.calendly.com/assets/external/widget.js';
+                script.async = true;
+                document.head.appendChild(script);
+            }
+            
+            // Close on overlay click
+            overlay.onclick = (e) => {
+                if (e.target === overlay) {
+                    overlay.remove();
+                }
+            };
+            
+            // Prevent body scroll
+            document.body.style.overflow = 'hidden';
+            overlay.onremove = () => {
+                document.body.style.overflow = '';
+            };
+        }
+        
         // Handle instant audit form submission
         document.addEventListener('DOMContentLoaded', function() {
             const instantAuditForm = document.getElementById('instant-audit-form');
@@ -1593,8 +1714,8 @@ Source: ${leadData.source}
                                 });
                             }
                             
-                            // Redirect to success page
-                            window.location.href = `quiz-instant-success.html?email=${encodeURIComponent(auditData.email)}&savings=${auditData.estimatedSavings}&rate=${effectiveTaxRate}`;
+                            // Show calendar popup immediately
+                            showCalendarPopup(auditData);
                         } else {
                             // Handle error
                             btn.innerHTML = '❌ Error - Please Try Again';
