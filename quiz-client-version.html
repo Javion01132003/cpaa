@@ -1294,7 +1294,7 @@
                 localStorage.setItem('quizLead_' + Date.now(), JSON.stringify(leadData));
                 
                 // Send via Formspree (free, reliable alternative)
-                const formspreeUrl = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
+                const formspreeUrl = 'https://formspree.io/f/xqayvbrp';
                 
                 // Or send via email using mailto (immediate, no setup)
                 const emailSubject = `New Tax Quiz Lead: ${leadData.firstName} ${leadData.lastName}`;
@@ -1603,6 +1603,40 @@ Source: ${leadData.source}
                         }
                     } catch (error) {
                         console.error('Form submission error:', error);
+                        console.error('Error details:', error.message);
+                        console.error('Form data:', formData);
+                        
+                        // Show specific error message
+                        const errorDiv = document.createElement('div');
+                        errorDiv.className = 'error-message';
+                        errorDiv.style.cssText = `
+                            position: fixed;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                            background: #ff4444;
+                            color: white;
+                            padding: 20px;
+                            border-radius: 8px;
+                            z-index: 10000;
+                            text-align: center;
+                            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                        `;
+                        errorDiv.innerHTML = `
+                            <h3>Something went wrong. Please try again or contact support.</h3>
+                            <p>Error: ${error.message}</p>
+                            <button onclick="this.parentElement.remove()" style="
+                                background: white;
+                                color: #ff4444;
+                                border: none;
+                                padding: 10px 20px;
+                                border-radius: 4px;
+                                cursor: pointer;
+                                margin-top: 10px;
+                            ">Close</button>
+                        `;
+                        document.body.appendChild(errorDiv);
+                        
                         btn.innerHTML = '❌ Error - Please Try Again';
                         btn.disabled = false;
                     }
@@ -1612,20 +1646,35 @@ Source: ${leadData.source}
         
         // CRITICAL: Populate hidden fields with quiz answers when results page loads
         function populateQuizData() {
+            console.log('populateQuizData called');
+            console.log('answers object:', answers);
+            
+            // Check if answers exist
+            if (!answers || !answers.q1 || !answers.q2 || !answers.q3) {
+                console.error('Quiz answers not found!', answers);
+                return;
+            }
+            
             // Get the answer text from quiz responses
             const revenueText = getAnswerText('q1', answers.q1);
             const industryText = getAnswerText('q2', answers.q2);
             const approachText = getAnswerText('q3', answers.q3);
             
-            // Populate hidden fields
-            document.getElementById('hidden-revenue').value = revenueText;
-            document.getElementById('hidden-industry').value = industryText;
-            document.getElementById('hidden-taxApproach').value = approachText;
+            console.log('Answer texts:', { revenueText, industryText, approachText });
             
-            console.log('Quiz data populated:', {
-                revenue: revenueText,
-                industry: industryText,
-                taxApproach: approachText
+            // Populate hidden fields
+            const revenueField = document.getElementById('hidden-revenue');
+            const industryField = document.getElementById('hidden-industry');
+            const approachField = document.getElementById('hidden-taxApproach');
+            
+            if (revenueField) revenueField.value = revenueText;
+            if (industryField) industryField.value = industryText;
+            if (approachField) approachField.value = approachText;
+            
+            console.log('Hidden fields populated:', {
+                revenue: revenueField?.value,
+                industry: industryField?.value,
+                approach: approachField?.value
             });
         }
 
