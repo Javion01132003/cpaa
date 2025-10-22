@@ -2,11 +2,23 @@
   "rewrites": [
     {
       "source": "/",
-      "destination": "/quiz-simple.html"
+      "destination": "/quiz-client-version.html"
     },
     {
       "source": "/quiz",
-      "destination": "/quiz-simple.html"
+      "destination": "/quiz-client-version.html"
+    },
+    {
+      "source": "/client",
+      "destination": "/quiz-client-version.html"
+    },
+    {
+      "source": "/framework",
+      "destination": "/quiz-framework-version.html"
+    },
+    {
+      "source": "/success",
+      "destination": "/quiz-instant-success.html"
     }
   ],
   "headers": [
