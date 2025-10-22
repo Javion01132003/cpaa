@@ -1,0 +1,47 @@
+<!-- Replace your current form with this Netlify Forms version -->
+<form class="email-form" name="tax-quiz-leads" method="POST" netlify>
+    <input type="hidden" name="form-name" value="tax-quiz-leads" />
+    <input type="hidden" name="quiz-data" id="quizDataInput" />
+    
+    <div class="form-row">
+        <div class="form-field">
+            <label for="firstName">First Name *</label>
+            <input type="text" name="firstName" required>
+        </div>
+        <div class="form-field">
+            <label for="lastName">Last Name *</label>
+            <input type="text" name="lastName" required>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-field">
+            <label for="email">Email Address *</label>
+            <input type="email" name="email" required>
+        </div>
+        <div class="form-field">
+            <label for="phone">Phone Number</label>
+            <input type="tel" name="phone">
+        </div>
+    </div>
+    <div class="form-field">
+        <label for="company">Company Name</label>
+        <input type="text" name="company">
+    </div>
+    <button type="submit">Book Your Free Strategy Call →</button>
+</form>
+
+<!-- JavaScript to populate hidden field with quiz data -->
+<script>
+function populateQuizData() {
+    const quizData = JSON.stringify({
+        answers: answers,
+        resultType: getResultType(answers.q3),
+        leadScore: calculateSimpleLeadScore({quizAnswers: answers}),
+        timestamp: new Date().toISOString()
+    });
+    document.getElementById('quizDataInput').value = quizData;
+}
+
+// Call before form submission
+document.querySelector('form[name="tax-quiz-leads"]').addEventListener('submit', populateQuizData);
+</script>

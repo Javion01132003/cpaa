@@ -1008,21 +1008,55 @@
                 // Always save to localStorage first
                 localStorage.setItem('quizLead_' + Date.now(), JSON.stringify(leadData));
                 
-                // Send to n8n webhook
-                const webhookUrl = 'https://savanttttttt.app.n8n.cloud/webhook/tax-quiz-leads';
+                // Send via Formspree (free, reliable alternative)
+                const formspreeUrl = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
                 
-                const response = await fetch(webhookUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(leadData)
-                });
+                // Or send via email using mailto (immediate, no setup)
+                const emailSubject = `New Tax Quiz Lead: ${leadData.firstName} ${leadData.lastName}`;
+                const emailBody = `
+New Tax Quiz Lead Submitted:
+
+CONTACT INFO:
+Name: ${leadData.firstName} ${leadData.lastName}
+Email: ${leadData.email}
+Phone: ${leadData.phone || 'Not provided'}
+Company: ${leadData.company || 'Not provided'}
+
+QUIZ ANSWERS:
+Revenue: ${leadData.quizAnswers.revenue}
+Industry: ${leadData.quizAnswers.industry}
+Tax Approach: ${leadData.quizAnswers.taxApproach}
+Result Type: ${leadData.resultType}
+
+LEAD SCORE: ${calculateSimpleLeadScore(leadData)}
+Submitted: ${leadData.timestamp}
+Source: ${leadData.source}
+                `.trim();
                 
-                console.log('n8n response status:', response.status);
-                console.log('n8n response:', await response.text());
+                // Option 1: Try Formspree (if configured)
+                try {
+                    const response = await fetch(formspreeUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            email: leadData.email,
+                            name: `${leadData.firstName} ${leadData.lastName}`,
+                            message: emailBody,
+                            _replyto: leadData.email,
+                            _subject: emailSubject
+                        })
+                    });
+                    console.log('Formspree response:', response.status);
+                } catch (error) {
+                    // Fallback: Open email client
+                    const mailtoUrl = `mailto:leads@customaccountingcpa.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+                    console.log('Opening email client...');
+                    // Window.open(mailtoUrl); // Uncomment to auto-open email
+                }
                 
-                // Show success even if n8n fails (data is saved locally)
+                // Show success - data is always saved locally
                 submitBtn.textContent = 'Success! Redirecting...';
                 submitBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
                 
@@ -1030,12 +1064,15 @@
                 if (typeof fbq !== 'undefined') {
                     fbq('track', 'Lead', {
                         content_name: 'Tax Quiz Lead',
-                        value: leadData.leadScore || 0,
+                        value: calculateSimpleLeadScore(leadData),
                         currency: 'USD'
                     });
                 }
                 
+                // Add download leads button for easy access
                 setTimeout(() => {
+                    // Optional: Auto-download CSV of all leads
+                    // downloadAllLeads();
                     window.location.href = 'https://customaccountingcpa.com/free-consultation/';
                 }, 1500);
                 
@@ -1064,6 +1101,30 @@
             } else {
                 return 'low-opportunity';
             }
+        }
+
+        function calculateSimpleLeadScore(data) {
+            let score = 50;
+            
+            // Revenue scoring
+            if (data.quizAnswers.revenue === '2m-5m') score += 20;
+            if (data.quizAnswers.revenue === '5m-10m') score += 25;
+            if (data.quizAnswers.revenue === 'over-10m') score += 30;
+            
+            // Tax approach scoring
+            if (data.quizAnswers.taxApproach === 'once-year') score += 30;
+            if (data.quizAnswers.taxApproach === 'self-done') score += 35;
+            if (data.quizAnswers.taxApproach === 'quarterly-reactive') score += 15;
+            
+            // Industry scoring
+            if (data.quizAnswers.industry === 'medical') score += 15;
+            if (data.quizAnswers.industry === 'production') score += 20;
+            if (data.quizAnswers.industry === 'services') score += 10;
+            
+            const finalScore = Math.min(score, 100);
+            const priority = finalScore >= 85 ? 'HOT' : finalScore >= 70 ? 'HIGH' : finalScore >= 55 ? 'MEDIUM' : 'LOW';
+            
+            return `${finalScore}/100 (${priority} PRIORITY)`;
         }
 
         // Initialize
@@ -1101,6 +1162,61 @@
         
         // Show banner on page load
         showCookieBanner();
+        
+        // BONUS: Easy lead download function
+        function downloadAllLeads() {
+            const leads = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('quizLead_')) {
+                    try {
+                        const lead = JSON.parse(localStorage.getItem(key));
+                        leads.push(lead);
+                    } catch (e) {
+                        console.log('Skipping invalid lead data');
+                    }
+                }
+            }
+            
+            if (leads.length === 0) {
+                alert('No leads found in storage');
+                return;
+            }
+            
+            // Convert to CSV
+            const headers = ['Timestamp', 'First Name', 'Last Name', 'Email', 'Phone', 'Company', 'Revenue', 'Industry', 'Tax Approach', 'Result Type', 'Lead Score', 'Priority'];
+            const csvContent = [
+                headers.join(','),
+                ...leads.map(lead => [
+                    lead.timestamp,
+                    lead.firstName,
+                    lead.lastName,
+                    lead.email,
+                    lead.phone || '',
+                    lead.company || '',
+                    lead.quizAnswers?.revenue || '',
+                    lead.quizAnswers?.industry || '',
+                    lead.quizAnswers?.taxApproach || '',
+                    lead.resultType,
+                    calculateSimpleLeadScore(lead).split(' ')[0], // Just the score
+                    calculateSimpleLeadScore(lead).split('(')[1]?.replace(')', '') || '' // Just priority
+                ].map(field => `"${field}"`).join(','))
+            ].join('\n');
+            
+            // Download CSV
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `tax-quiz-leads-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Make it accessible from console: downloadAllLeads()
+        window.downloadAllLeads = downloadAllLeads;
     </script>
     
     <!-- Cookie Consent Banner -->
