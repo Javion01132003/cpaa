@@ -1559,7 +1559,7 @@ Source: ${leadData.source}
                          style="min-width:320px;height:600px;">
                     </div>
                     
-                    <button onclick="this.closest('.calendar-popup').remove()" style="
+                    <button onclick="closeCalendarPopup()" style="
                         background: #666;
                         color: white;
                         border: none;
@@ -1592,7 +1592,7 @@ Source: ${leadData.source}
                 border-radius: 50%;
                 transition: background 0.2s;
             `;
-            closeBtn.onclick = () => overlay.remove();
+            closeBtn.onclick = () => closeCalendarPopup();
             closeBtn.onmouseover = () => closeBtn.style.background = '#f0f0f0';
             closeBtn.onmouseout = () => closeBtn.style.background = 'none';
             
@@ -1620,6 +1620,18 @@ Source: ${leadData.source}
             overlay.onremove = () => {
                 document.body.style.overflow = '';
             };
+            
+            // Store overlay reference globally for close function
+            window.currentCalendarOverlay = overlay;
+        }
+        
+        // Global function to close calendar popup
+        function closeCalendarPopup() {
+            if (window.currentCalendarOverlay) {
+                window.currentCalendarOverlay.remove();
+                document.body.style.overflow = '';
+                window.currentCalendarOverlay = null;
+            }
         }
         
         // Handle instant audit form submission
