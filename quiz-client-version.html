@@ -1515,7 +1515,17 @@ Source: ${leadData.source}
         
         // Show calendar popup immediately after form submission
         function showCalendarPopup(auditData) {
-            // Create popup overlay
+            try {
+                console.log('showCalendarPopup called with data:', auditData);
+                
+                // Validate auditData
+                if (!auditData) {
+                    console.error('auditData is null or undefined');
+                    alert('Error: Missing data. Please try again.');
+                    return;
+                }
+                
+                // Create popup overlay
             const overlay = document.createElement('div');
             overlay.style.cssText = `
                 position: fixed;
@@ -1555,10 +1565,10 @@ Source: ${leadData.source}
                 
                 <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
                     <h3 style="color: #008080; margin-bottom: 10px;">Your Preliminary Analysis:</h3>
-                    <p><strong>Taxable Income:</strong> $${auditData.taxableIncome.toLocaleString()}</p>
-                    <p><strong>Tax Paid:</strong> $${auditData.taxPaid.toLocaleString()}</p>
-                    <p><strong>Effective Tax Rate:</strong> ${auditData.effectiveTaxRate}%</p>
-                    <p><strong>Estimated Annual Savings:</strong> <span style="color: #008080; font-weight: bold;">$${auditData.estimatedSavings.toLocaleString()}</span></p>
+                    <p><strong>Taxable Income:</strong> $${(auditData.taxableIncome || 0).toLocaleString()}</p>
+                    <p><strong>Tax Paid:</strong> $${(auditData.taxPaid || 0).toLocaleString()}</p>
+                    <p><strong>Effective Tax Rate:</strong> ${auditData.effectiveTaxRate || '0.00'}%</p>
+                    <p><strong>Estimated Annual Savings:</strong> <span style="color: #008080; font-weight: bold;">$${(auditData.estimatedSavings || 0).toLocaleString()}</span></p>
                 </div>
                 
                 <div style="text-align: center;">
@@ -1637,6 +1647,22 @@ Source: ${leadData.source}
             
             // Store overlay reference globally for close function
             window.currentCalendarOverlay = overlay;
+            
+            } catch (error) {
+                console.error('Error in showCalendarPopup:', error);
+                console.error('Error details:', error.message);
+                console.error('auditData:', auditData);
+                
+                // Show user-friendly error message
+                alert('Sorry, there was an error displaying the calendar. Please try again or contact support.');
+                
+                // Reset button state
+                const btn = document.querySelector('#instant-audit-form button');
+                if (btn) {
+                    btn.innerHTML = '⚡ GENERATE MY FREE REPORT NOW →';
+                    btn.disabled = false;
+                }
+            }
         }
         
         // Global function to close calendar popup
@@ -1674,6 +1700,22 @@ Source: ${leadData.source}
                     // Calculate tax metrics
                     const taxableIncome = parseFloat(document.getElementById('taxableIncome').value);
                     const taxPaid = parseFloat(document.getElementById('taxPaid').value);
+                    
+                    // Validate inputs
+                    if (isNaN(taxableIncome) || taxableIncome <= 0) {
+                        alert('Please enter a valid taxable income amount.');
+                        btn.innerHTML = '⚡ GENERATE MY FREE REPORT NOW →';
+                        btn.disabled = false;
+                        return;
+                    }
+                    
+                    if (isNaN(taxPaid) || taxPaid < 0) {
+                        alert('Please enter a valid tax paid amount.');
+                        btn.innerHTML = '⚡ GENERATE MY FREE REPORT NOW →';
+                        btn.disabled = false;
+                        return;
+                    }
+                    
                     const effectiveTaxRate = ((taxPaid / taxableIncome) * 100).toFixed(2);
                     
                     // Calculate savings potential
