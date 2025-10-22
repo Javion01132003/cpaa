@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Report is Ready! | Custom Accounting CPA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', 'YOUR_FACEBOOK_PIXEL_ID_HERE');
+        fbq('track', 'Lead', {
+            content_name: 'Free Audit Generated',
+            value: 0,
+            currency: 'USD'
+        });
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: #F2F2F2;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+
+        /* Logo Header Styles */
+        .logo-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem 1rem;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e5e5;
+            margin-bottom: 2rem;
+        }
+
+        .logo-image {
+            max-height: 60px;
+            width: auto;
+            height: auto;
+        }
+
+        .success-container {
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 6px 6px 9px rgba(0, 0, 0, 0.2);
+            padding: 3rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .celebration {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        .page-title {
+            font-family: 'Merriweather', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: #2a2a2a;
+            margin-bottom: 1rem;
+        }
+
+        .subheadline {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            color: #008080;
+            margin-bottom: 2rem;
+        }
+
+        .savings-highlight {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffffff 100%);
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .savings-highlight h2 {
+            font-family: 'Merriweather', serif;
+            color: #2a2a2a;
+            margin-bottom: 1rem;
+        }
+
+        .savings-amount {
+            font-family: 'Merriweather', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, #FEB911, #F2AD05);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .savings-note {
+            font-family: 'Montserrat', sans-serif;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .next-step-section {
+            background: linear-gradient(135deg, #f0f8ff 0%, #ffffff 100%);
+            border: 2px solid #008080;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .next-step-section h2 {
+            font-family: 'Merriweather', serif;
+            color: #008080;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .next-step-section p {
+            font-family: 'Montserrat', sans-serif;
+            color: #666;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .calendly-inline-widget {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .email-reminder {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+
+        .email-reminder p {
+            font-family: 'Montserrat', sans-serif;
+            color: #666;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .email-reminder ul {
+            font-family: 'Montserrat', sans-serif;
+            color: #666;
+            padding-left: 1.5rem;
+        }
+
+        .email-reminder li {
+            margin-bottom: 0.5rem;
+        }
+
+        .email-reminder a {
+            color: #008080;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .email-reminder a:hover {
+            text-decoration: underline;
+        }
+
+        .urgency-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffffff 100%);
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .urgency-box h3 {
+            font-family: 'Merriweather', serif;
+            color: #2a2a2a;
+            margin-bottom: 0.5rem;
+        }
+
+        .urgency-box p {
+            font-family: 'Montserrat', sans-serif;
+            color: #666;
+        }
+
+        .what-happens-next {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+
+        .what-happens-next h3 {
+            font-family: 'Merriweather', serif;
+            color: #008080;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .what-happens-next ol {
+            font-family: 'Montserrat', sans-serif;
+            color: #666;
+            padding-left: 1.5rem;
+        }
+
+        .what-happens-next li {
+            margin-bottom: 0.75rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .logo-header {
+                padding: 1.5rem 1rem 0.75rem;
+            }
+            
+            .logo-image {
+                max-height: 50px;
+            }
+            
+            .success-container {
+                padding: 2rem 1.5rem;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .savings-amount {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Logo Header -->
+        <div class="logo-header">
+            <img src="https://customaccountingcpa.com/wp-content/uploads/2025/04/logo-custom-accounting-cpa-logo-v1.svg" 
+                 alt="Custom Accounting CPA" 
+                 class="logo-image">
+        </div>
+
+        <div class="success-container">
+            <div class="celebration">🎉</div>
+            
+            <h1 class="page-title">Your Report is Being Prepared!</h1>
+            <p class="subheadline">You'll receive your personalized Tax Savings Audit at <strong id="userEmail"></strong> within the next 5 minutes.</p>
+            
+            <div class="savings-highlight">
+                <h2>Your Estimated Annual Savings:</h2>
+                <div class="savings-amount">$<span id="savingsAmount"></span></div>
+                <p class="savings-note">based on your tax rate of <span id="taxRate"></span>%</p>
+            </div>
+
+            <div class="what-happens-next">
+                <h3>What Happens Next:</h3>
+                <ol>
+                    <li>📧 Check your email in 5 minutes for your complete report</li>
+                    <li>📊 Review your personalized savings opportunities</li>
+                    <li>📞 Book a call below to discuss implementation</li>
+                </ol>
+            </div>
+
+            <div class="urgency-box">
+                <h3>⏰ Q4 2024 DEADLINE APPROACHING</h3>
+                <p>You have until December 31, 2024 to implement these strategies for this tax year!</p>
+            </div>
+            
+            <div class="next-step-section">
+                <h2>Want to Discuss Your Specific Report?</h2>
+                <p>Book your FREE 30-minute strategy call below. Your report details are already loaded for our CPA to review before the call.</p>
+                
+                <!-- Calendly inline widget with prefilled data -->
+                <div class="calendly-inline-widget" 
+                     data-url="https://calendly.com/genz-investorr/custom-accounting-cpa"
+                     id="calendly-embed"
+                     style="min-width:320px;height:700px;">
+                </div>
+                <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+            </div>
+            
+            <div class="email-reminder">
+                <p><strong>Didn't get the email?</strong></p>
+                <ul>
+                    <li>Check your spam/junk folder</li>
+                    <li>Search for "Custom Accounting CPA"</li>
+                    <li>Add natalya@customaccountingcpa.com to contacts</li>
+                    <li>Still can't find it? <a href="mailto:support@customaccountingcpa.com">Contact support</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Get URL parameters
+        const params = new URLSearchParams(window.location.search);
+        const userEmail = params.get('email') || 'your email';
+        const savingsAmount = params.get('savings') || '0';
+        const taxRate = params.get('rate') || '0';
+        
+        document.getElementById('userEmail').textContent = userEmail;
+        document.getElementById('savingsAmount').textContent = savingsAmount.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        document.getElementById('taxRate').textContent = taxRate;
+        
+        // Initialize Calendly with prefilled data from localStorage
+        const auditData = JSON.parse(localStorage.getItem('auditData') || '{}');
+        
+        const calendlyUrl = `https://calendly.com/genz-investorr/custom-accounting-cpa?` +
+            `name=${encodeURIComponent(auditData.name || '')}&` +
+            `email=${encodeURIComponent(auditData.email || '')}&` +
+            `a1=Revenue: ${encodeURIComponent(auditData.revenue || '')}&` +
+            `a2=Industry: ${encodeURIComponent(auditData.industry || '')}&` +
+            `a3=Tax Rate: ${auditData.effectiveTaxRate || ''}%&` +
+            `a4=Potential Savings: $${auditData.savings?.conservative || '0'}&` +
+            `hide_gdpr_banner=1&primary_color=008080`;
+        
+        // Update Calendly URL when widget loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendlyWidget = document.getElementById('calendly-embed');
+            if (calendlyWidget) {
+                calendlyWidget.setAttribute('data-url', calendlyUrl);
+            }
+        });
+        
+        // Track page view
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'PageView');
+        }
+    </script>
+</body>
+</html>

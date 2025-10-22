@@ -1,0 +1,1681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Savings Quiz | Custom Accounting CPA</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "ttu5mnu3pv");
+    </script>
+    
+    <!-- Facebook Pixel Code -->
+    <script>
+        !function(f,b,e,v,n,t,s)
+        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+        if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+        n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];
+        s.parentNode.insertBefore(t,s)}(window, document,'script',
+        'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', 'YOUR_FACEBOOK_PIXEL_ID_HERE');
+        fbq('track', 'PageView');
+    </script>
+    <noscript>
+        <img height="1" width="1" style="display:none"
+        src="https://www.facebook.com/tr?id=YOUR_FACEBOOK_PIXEL_ID_HERE&ev=PageView&noscript=1"/>
+    </noscript>
+    <!-- End Facebook Pixel Code -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: #F2F2F2;
+            overflow-x: hidden;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.6;
+            color: #2a2a2a;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .progress-bar-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #f2f2f2;
+            z-index: 1000;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #008080, #5fafb0);
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0%;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        .landing-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #008080 0%, #5fafb0 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .landing-content {
+            max-width: 600px;
+        }
+
+        .landing-page h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 55px;
+            font-weight: 400;
+            color: white;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        /* Yellow gradient for dollar amounts and ROI (on any background) */
+        .gradient-text {
+            background: linear-gradient(90deg, #FEB911, #F2AD05);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        
+        /* Teal gradient for power words like "90-second" (on dark backgrounds) */
+        .landing-page .gradient-text.teal-gradient {
+            background: linear-gradient(90deg, #cfeded, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        /* Yellow gradient for results (dollar amounts and ROI) */
+        .results-content .gradient-text {
+            background: linear-gradient(90deg, #FEB911, #F2AD05);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+        
+        .results-header .gradient-text {
+            background: linear-gradient(90deg, #FEB911, #F2AD05);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .landing-page .subheadline {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.125rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2.5rem;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        .cta-button {
+            background: #FEB911;
+            color: #2a2a2a;
+            border: 2px solid #F2AD05;
+            padding: 15px 30px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(254, 185, 17, 0.4);
+            transition: all 0.2s ease;
+            min-height: 56px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .cta-button:hover {
+            background: #cfeded;
+            border-color: #c3e1e1;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 128, 128, 0.3);
+        }
+
+        .trust-badges {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            opacity: 0.7;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .question-page {
+            min-height: 100vh;
+            padding: 5rem 1.5rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .question-container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .question-number {
+            display: inline-block;
+            background: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            color: #008080;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-title {
+            font-family: 'Merriweather', serif;
+            font-size: 30px;
+            font-weight: 400;
+            color: #2a2a2a;
+            margin-bottom: 2rem;
+            line-height: 1.3;
+        }
+
+        .answer-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .answer-card {
+            background: #FFFFFF;
+            padding: 1.25rem 1.5rem;
+            border-radius: 15px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 6px 6px 9px rgba(0, 0, 0, 0.2);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            font-weight: 400;
+            color: #2a2a2a;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            min-height: 64px;
+            position: relative;
+        }
+
+        .answer-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 128, 128, 0.15);
+            border-color: #c3e1e1;
+        }
+
+        .answer-card.selected {
+            border-color: #008080;
+            background: #FFFFFF;
+            box-shadow: 0 4px 20px rgba(0, 128, 128, 0.3);
+            transform: scale(1.02);
+        }
+
+        .answer-card.selected::after {
+            content: '✓';
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #008080;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .next-button {
+            background: #FEB911;
+            color: #2a2a2a;
+            border: 2px solid #F2AD05;
+            padding: 15px 30px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(254, 185, 17, 0.3);
+            transition: all 0.2s ease;
+            width: 100%;
+            max-width: 600px;
+            min-height: 56px;
+            display: none;
+        }
+
+        .next-button.show {
+            display: block;
+        }
+
+        .next-button:hover {
+            background: #cfeded;
+            border-color: #c3e1e1;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 128, 128, 0.3);
+        }
+
+        .back-button {
+            background: transparent;
+            color: #666;
+            border: none;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 400;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: color 0.2s ease;
+            border-radius: 8px;
+        }
+
+        .back-button:hover {
+            color: #008080;
+            background: rgba(0, 128, 128, 0.05);
+        }
+
+        .other-option {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .other-option.active {
+            border-color: #008080;
+            background: #cfeded;
+        }
+
+        .other-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #949494;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Montserrat', sans-serif;
+            margin-top: 0.5rem;
+            transition: border-color 0.2s ease;
+        }
+
+        .other-input:focus {
+            outline: none;
+            border-color: #008080;
+            box-shadow: 0 0 0 3px rgba(0, 128, 128, 0.1);
+        }
+
+        .other-label {
+            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .email-capture {
+            background: #FFFFFF;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 6px 6px 9px rgba(0, 0, 0, 0.2);
+            margin: 2rem 0;
+            border: 2px solid #008080;
+        }
+
+        .email-capture h3 {
+            font-family: 'Merriweather', serif;
+            font-size: 24px;
+            font-weight: 400;
+            color: #2a2a2a;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .email-capture p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem;
+            color: #2a2a2a;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .email-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-field {
+            flex: 1;
+        }
+
+        .form-field label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            color: #2a2a2a;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-field input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #949494;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Montserrat', sans-serif;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-field input:focus {
+            outline: none;
+            border-color: #008080;
+            box-shadow: 0 0 0 3px rgba(0, 128, 128, 0.1);
+        }
+
+        .form-field input:required {
+            border-color: #008080;
+        }
+
+        .email-submit {
+            background: #FEB911;
+            color: #2a2a2a;
+            border: 2px solid #F2AD05;
+            padding: 15px 30px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .email-submit:hover {
+            background: #cfeded;
+            border-color: #c3e1e1;
+            transform: translateY(-1px);
+        }
+
+        .email-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+        }
+
+        .results-page {
+            min-height: 100vh;
+            padding: 5rem 1.5rem 2rem;
+        }
+
+        .results-header {
+            background: linear-gradient(135deg, #008080 0%, #5fafb0 100%);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-radius: 24px 24px 0 0;
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .results-header h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 30px;
+            font-weight: 400;
+            color: white !important;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+        
+        .results-header p {
+            font-family: 'Montserrat', sans-serif;
+            color: white !important;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        
+        #resultsSubtitle {
+            color: white !important;
+        }
+
+        .results-content {
+            background: #FFFFFF;
+            padding: 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            border-radius: 0 0 24px 24px;
+            box-shadow: 6px 6px 9px rgba(0, 0, 0, 0.2);
+        }
+
+        .results-cta {
+            background: #FEB911;
+            color: #2a2a2a;
+            border: 2px solid #F2AD05;
+            padding: 15px 30px;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(254, 185, 17, 0.4);
+            transition: all 0.2s ease;
+            width: 100%;
+            min-height: 64px;
+            margin-top: 2rem;
+        }
+
+        .results-cta:hover {
+            background: #cfeded;
+            border-color: #c3e1e1;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0, 128, 128, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .landing-page h1 { font-size: 40px; }
+            .question-title { font-size: 24px; }
+            .results-header h1 { font-size: 24px; }
+            .cta-button { padding: 12px 18px; font-size: 13px; }
+            .next-button { padding: 12px 18px; font-size: 13px; }
+            .email-submit { padding: 12px 18px; font-size: 13px; }
+        }
+
+        /* Cookie Consent Banner */
+        .cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 128, 128, 0.98);
+            color: white;
+            padding: 1.5rem;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 10000;
+            display: none;
+        }
+
+        .cookie-banner.show {
+            display: block;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        .cookie-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .cookie-text {
+            flex: 1;
+            min-width: 300px;
+            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.6;
+        }
+
+        .cookie-text a {
+            color: #FEB911;
+            text-decoration: underline;
+        }
+
+        .cookie-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .cookie-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+        }
+
+        .cookie-accept {
+            background: #FEB911;
+            color: #2a2a2a;
+            border: 2px solid #F2AD05;
+        }
+
+        .cookie-accept:hover {
+            background: #F2AD05;
+        }
+
+        .cookie-decline {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .cookie-decline:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+
+        .quiz-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.75rem;
+            text-align: center;
+            font-size: 0.75rem;
+            font-family: 'Montserrat', sans-serif;
+            color: #666;
+            z-index: 100;
+            border-top: 1px solid #eee;
+        }
+
+        .quiz-footer a {
+            color: #428BCA;
+            text-decoration: none;
+            margin: 0 0.75rem;
+        }
+
+        .quiz-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Logo Header Styles */
+        .logo-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem 1rem;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .logo-image {
+            max-height: 60px;
+            width: auto;
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            .logo-header {
+                padding: 1.5rem 1rem 0.75rem;
+            }
+            
+            .logo-image {
+                max-height: 50px;
+            }
+        }
+
+        /* Instant Audit Form Styles */
+        .instant-audit-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border: 2px solid #FEB911;
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        .value-badge {
+            display: inline-block;
+            background: #FEB911;
+            color: #2a2a2a;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .instant-audit-section h2 {
+            font-family: 'Merriweather', serif;
+            font-size: 28px;
+            font-weight: 400;
+            color: #2a2a2a;
+            margin-bottom: 0.5rem;
+        }
+
+        .audit-subheadline {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .audit-form {
+            margin: 1.5rem 0;
+        }
+
+        .form-field {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-field label {
+            display: block;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: #2a2a2a;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-field label strong {
+            color: #008080;
+        }
+
+        .help-text {
+            display: block;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 0.25rem;
+            font-style: italic;
+        }
+
+        .form-field input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-field input:focus {
+            outline: none;
+            border-color: #008080;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .audit-button {
+            background: #FEB911;
+            color: #2a2a2a;
+            border: 2px solid #F2AD05;
+            padding: 18px 40px;
+            font-size: 18px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 8px 24px rgba(254, 185, 17, 0.4);
+            transition: all 0.2s ease;
+            width: 100%;
+            min-height: 64px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .audit-button:hover {
+            background: #F2AD05;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(254, 185, 17, 0.5);
+        }
+
+        .audit-button:disabled {
+            background: #ccc;
+            border-color: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .guarantee-text {
+            text-align: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            color: #666;
+            margin-top: 1rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .instant-audit-section {
+                padding: 2rem 1.5rem;
+            }
+            
+            .instant-audit-section h2 {
+                font-size: 24px;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="progress-bar-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- Logo Header -->
+        <div class="logo-header">
+            <img src="https://customaccountingcpa.com/wp-content/uploads/2025/04/logo-custom-accounting-cpa-logo-v1.svg" 
+                 alt="Custom Accounting CPA" 
+                 class="logo-image">
+        </div>
+
+        <!-- Landing Page -->
+        <div id="landing" class="page active">
+            <div class="landing-page">
+                <div class="landing-content">
+                    <h1>How Much Are You <span class="gradient-text">Overpaying</span> in Taxes?</h1>
+                    <p class="subheadline">
+                        Take this <span class="gradient-text teal-gradient">90-second quiz</span> to discover your potential annual savings. 
+                        Most business owners between $500K-$5M overpay by <span class="gradient-text">$20K-$100K annually</span>.
+                    </p>
+                    <button class="cta-button" onclick="startQuiz()">START QUIZ →</button>
+                    <div class="trust-badges">
+                        <div>✓ 90 seconds</div>
+                        <div>✓ Free analysis</div>
+                        <div>✓ Instant results</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 1 -->
+        <div id="question1" class="page">
+            <div class="question-page">
+                <div class="question-container">
+                    <span class="question-number">1 of 3</span>
+                    <h2 class="question-title">What's your approximate annual revenue?</h2>
+                    <div class="answer-cards">
+                        <button class="answer-card" onclick="selectAnswer('q1', 'under-750k', this)">Under $750K</button>
+                        <button class="answer-card" onclick="selectAnswer('q1', '750k-2m', this)">$750K - $2M</button>
+                        <button class="answer-card" onclick="selectAnswer('q1', '2m-5m', this)">$2M - $5M</button>
+                        <button class="answer-card" onclick="selectAnswer('q1', 'over-5m', this)">Over $5M</button>
+                    </div>
+                    <div class="other-option" id="other-q1">
+                        <div class="other-label">Other (please specify):</div>
+                        <input type="text" class="other-input" id="other-input-q1" placeholder="e.g., $15M, varies by year, etc." 
+                               onclick="selectOtherAnswer('q1')" oninput="handleOtherInput('q1', this.value)">
+                    </div>
+                    <button class="next-button" id="next1" onclick="nextQuestion(2)">Next →</button>
+                    <button class="back-button" onclick="goBack(0)">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 2 -->
+        <div id="question2" class="page">
+            <div class="question-page">
+                <div class="question-container">
+                    <span class="question-number">2 of 3</span>
+                    <h2 class="question-title">Which industry best describes your business?</h2>
+                    <div class="answer-cards">
+                        <button class="answer-card" onclick="selectAnswer('q2', 'medical', this)">🏥 Medical/Healthcare (practices, labs, clinics)</button>
+                        <button class="answer-card" onclick="selectAnswer('q2', 'entertainment', this)">🎬 Entertainment</button>
+                        <button class="answer-card" onclick="selectAnswer('q2', 'real-estate', this)">🏠 Real Estate</button>
+                        <button class="answer-card" onclick="selectAnswer('q2', 'professional', this)">💼 Professional Services or Other</button>
+                    </div>
+                    <div class="other-option" id="other-q2">
+                        <div class="other-label">Other industry (please specify):</div>
+                        <input type="text" class="other-input" id="other-input-q2" placeholder="e.g., Technology, Retail, Construction, etc." 
+                               onclick="selectOtherAnswer('q2')" oninput="handleOtherInput('q2', this.value)">
+                    </div>
+                    <button class="next-button" id="next2" onclick="nextQuestion(3)">Next →</button>
+                    <button class="back-button" onclick="goBack(1)">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question 3 -->
+        <div id="question3" class="page">
+            <div class="question-page">
+                <div class="question-container">
+                    <span class="question-number">3 of 3</span>
+                    <h2 class="question-title">How does your CPA currently work with you?</h2>
+                    <div class="answer-cards">
+                        <button class="answer-card" onclick="selectAnswer('q3', 'once-year', this)">Once a year at tax time only</button>
+                        <button class="answer-card" onclick="selectAnswer('q3', 'quarterly-reactive', this)">Quarterly check-ins but mostly reactive</button>
+                        <button class="answer-card" onclick="selectAnswer('q3', 'strategic', this)">Ongoing proactive strategic planning sessions</button>
+                        <button class="answer-card" onclick="selectAnswer('q3', 'self-done', this)">I do my own taxes or not sure</button>
+                    </div>
+                    <div class="other-option" id="other-q3">
+                        <div class="other-label">Other situation (please describe):</div>
+                        <input type="text" class="other-input" id="other-input-q3" placeholder="e.g., Working with bookkeeper only, changing CPAs, etc." 
+                               onclick="selectOtherAnswer('q3')" oninput="handleOtherInput('q3', this.value)">
+                    </div>
+                    <button class="next-button" id="next3" onclick="showResults()">See My Results →</button>
+                    <button class="back-button" onclick="goBack(2)">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="page">
+            <div class="results-page">
+                <div class="results-header">
+                    <h1 id="resultsTitle">You're Likely Overpaying by <span class="gradient-text">$20K-$100K</span> Annually</h1>
+                    <p id="resultsSubtitle">Based on your answers, you fit the profile of business owners we've helped save the most money.</p>
+                </div>
+                <div class="results-content">
+                    <div id="resultsContent">
+                        <p style="font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
+                            Your business size puts you in the sweet spot for maximum tax savings. Your current approach means you're likely missing significant opportunities throughout the year.
+                        </p>
+                        <p style="text-align: center; background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin: 2rem 0;">
+                            A client saved <span class="gradient-text">tens of thousands annually</span> after switching to strategic quarterly planning—that's a <span class="gradient-text">760% ROI</span>.
+                        </p>
+                    </div>
+
+                    <!-- Instant Audit Form -->
+                    <div class="instant-audit-section">
+                        <div class="value-badge">🎁 FREE INSTANT REPORT</div>
+                        
+                        <h2>Get Your Complete 2024 Tax Savings Audit</h2>
+                        <p class="audit-subheadline">Answer 2 quick questions and receive your personalized 15-page report in the next 60 seconds</p>
+                        
+                        <!-- Quick Tax Calculation Form -->
+                        <form 
+                            id="instant-audit-form" 
+                            action="https://formspree.io/f/xqayvbrp" 
+                            method="POST"
+                            class="audit-form"
+                        >
+                            <!-- CRITICAL: Hidden fields with quiz answers -->
+                            <input type="hidden" name="revenue" id="hidden-revenue" value="">
+                            <input type="hidden" name="industry" id="hidden-industry" value="">
+                            <input type="hidden" name="taxApproach" id="hidden-taxApproach" value="">
+                            <input type="hidden" name="_subject" value="🚨 NEW Tax Audit Lead - INSTANT DELIVERY">
+                            
+                            <!-- Tax calculation fields -->
+                            <div class="form-field">
+                                <label for="taxableIncome">
+                                    <strong>What was your taxable income last year?</strong>
+                                    <span class="help-text">From your tax return (Line 15 on Form 1040)</span>
+                                </label>
+                                <input 
+                                    type="number" 
+                                    id="taxableIncome" 
+                                    name="taxableIncome"
+                                    placeholder="e.g., 850000"
+                                    required
+                                    min="0"
+                                    step="1000"
+                                >
+                            </div>
+                            
+                            <div class="form-field">
+                                <label for="taxPaid">
+                                    <strong>How much total tax did you pay last year?</strong>
+                                    <span class="help-text">Federal + State + Self-Employment tax combined</span>
+                                </label>
+                                <input 
+                                    type="number" 
+                                    id="taxPaid" 
+                                    name="taxPaid"
+                                    placeholder="e.g., 250000"
+                                    required
+                                    min="0"
+                                    step="1000"
+                                >
+                            </div>
+                            
+                            <!-- Contact info -->
+                            <div class="form-row">
+                                <div class="form-field">
+                                    <label for="firstName">First Name *</label>
+                                    <input type="text" id="firstName" name="firstName" required>
+                                </div>
+                                <div class="form-field">
+                                    <label for="lastName">Last Name *</label>
+                                    <input type="text" id="lastName" name="lastName" required>
+                                </div>
+                            </div>
+                            
+                            <div class="form-field">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" required>
+                                <span class="help-text">Report will be sent here instantly</span>
+                            </div>
+                            
+                            <div class="form-field">
+                                <label for="phone">Phone Number (Optional)</label>
+                                <input type="tel" id="phone" name="phone">
+                            </div>
+                            
+                            <!-- Calculated fields (hidden, auto-populated) -->
+                            <input type="hidden" name="effectiveTaxRate" id="effectiveTaxRate" value="">
+                            <input type="hidden" name="estimatedSavings" id="estimatedSavings" value="">
+                            <input type="hidden" name="priorityLevel" id="priorityLevel" value="">
+                            
+                            <button type="submit" class="audit-button">
+                                ⚡ GENERATE MY FREE REPORT NOW →
+                            </button>
+                            
+                            <p class="guarantee-text">
+                                ✓ Instant delivery to your email<br>
+                                ✓ No credit card required<br>
+                                ✓ 100% personalized to your situation
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        let answers = {};
+
+        function updateProgress() {
+            const progress = currentStep === 0 ? 0 : currentStep === 1 ? 33 : currentStep === 2 ? 66 : 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        function startQuiz() {
+            currentStep = 1;
+            updateProgress();
+            showPage('question1');
+            
+            // Facebook Pixel: Track quiz start
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'StartTrial'); // Or use custom event 'QuizStart'
+            }
+        }
+
+        function selectAnswer(question, value, element) {
+            // Store the previous answer
+            const previousAnswer = answers[question];
+            
+            // Update answer
+            answers[question] = value;
+            
+            // Remove selected class from siblings
+            element.parentNode.querySelectorAll('.answer-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Add selected class to clicked element
+            element.classList.add('selected');
+            
+            // Clear other input and remove active state
+            const otherOption = document.getElementById(`other-${question}`);
+            const otherInput = document.getElementById(`other-input-${question}`);
+            if (otherOption && otherInput) {
+                otherOption.classList.remove('active');
+                otherInput.value = '';
+            }
+            
+            // Auto-advance after a short delay for visual feedback
+            // Always advance, even if same answer clicked
+            setTimeout(() => {
+                if (question === 'q1') {
+                    nextQuestion(2);
+                } else if (question === 'q2') {
+                    nextQuestion(3);
+                } else if (question === 'q3') {
+                    showResults();
+                }
+            }, 600); // 600ms delay for smooth transition
+        }
+
+        function selectOtherAnswer(question) {
+            // Remove selected class from all answer cards
+            document.querySelectorAll(`#question${question.slice(-1)} .answer-card`).forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Activate other option
+            const otherOption = document.getElementById(`other-${question}`);
+            otherOption.classList.add('active');
+        }
+
+        function handleOtherInput(question, value) {
+            if (value.trim()) {
+                answers[question] = `other: ${value.trim()}`;
+                
+                // Show next button with "Continue" text for other inputs
+                const questionNum = question.slice(-1);
+                const nextButton = document.getElementById(`next${questionNum}`);
+                if (nextButton) {
+                    nextButton.classList.add('show');
+                    if (questionNum === '3') {
+                        nextButton.textContent = 'See My Results →';
+                    } else {
+                        nextButton.textContent = 'Continue →';
+                    }
+                }
+            } else {
+                // Hide next button if input is empty
+                const questionNum = question.slice(-1);
+                const nextButton = document.getElementById(`next${questionNum}`);
+                if (nextButton) {
+                    nextButton.classList.remove('show');
+                }
+            }
+        }
+
+        function goBack(step) {
+            if (step === 0) {
+                currentStep = 0;
+                showPage('landing');
+            } else {
+                currentStep = step;
+                showPage('question' + step);
+            }
+            updateProgress();
+        }
+
+        function nextQuestion(step) {
+            currentStep = step;
+            updateProgress();
+            showPage('question' + step);
+        }
+
+        function showResults() {
+            currentStep = 4;
+            updateProgress();
+            
+            // CRITICAL: Populate quiz data into form
+            populateQuizData();
+            
+            // Determine result type based on Q3 answer
+            const taxApproach = answers.q3;
+            let resultType = 'high';
+            
+            if (taxApproach === 'quarterly-reactive') {
+                resultType = 'medium';
+            } else if (taxApproach === 'strategic') {
+                resultType = 'low';
+            }
+            
+            // Show page first
+            showPage('results');
+            
+            // Then update content after page is visible
+            setTimeout(() => {
+                updateResultsContent(resultType);
+            }, 50);
+            
+            // Log completion
+            console.log('Quiz Completed:', {
+                ...answers,
+                resultType,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Facebook Pixel: Track quiz completion
+            if (typeof fbq !== 'undefined') {
+                fbq('track', 'CompleteRegistration', {
+                    content_name: 'Tax Quiz Completed',
+                    status: resultType
+                });
+            }
+        }
+
+        function updateResultsContent(type) {
+            const title = document.getElementById('resultsTitle');
+            const subtitle = document.getElementById('resultsSubtitle');
+            const content = document.getElementById('resultsContent');
+            const ctaButton = document.querySelector('.results-cta');
+            
+            // Safety check - make sure elements exist
+            if (!title || !subtitle || !content) {
+                console.error('Results elements not found');
+                return;
+            }
+            
+            if (type === 'medium') {
+                title.innerHTML = 'You Could Be Saving <span class="gradient-text">$15K-$50K</span> More Annually';
+                subtitle.textContent = 'You\'re doing better than most—but there\'s room for improvement.';
+                content.innerHTML = `
+                    <p style="font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
+                        You're doing better than most—but there's a difference between quarterly meetings and strategic quarterly planning. 
+                        Most CPAs are reactive. Strategic planning means proactively finding opportunities.
+                    </p>
+                    <p style="text-align: center; background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin: 2rem 0;">
+                        A client saved <span class="gradient-text">tens of thousands annually</span> by upgrading to strategic quarterly planning—that's a <span class="gradient-text">243% ROI</span>.
+                    </p>
+                `;
+            } else if (type === 'low') {
+                title.textContent = 'You\'re Ahead of Most Business Owners';
+                subtitle.textContent = 'You already have ongoing proactive strategic planning—that puts you in the top 10%.';
+                content.innerHTML = `
+                    <p style="font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
+                        You're already doing ongoing proactive strategic planning, which means you're ahead of 90% of business owners. 
+                        But even the best strategies need periodic review to ensure you're capturing new opportunities.
+                    </p>
+                `;
+                // Update button text only if button exists
+                if (ctaButton) {
+                    ctaButton.textContent = 'Book Your Complimentary Review →';
+                }
+            }
+        }
+
+        function bookConsultation() {
+            console.log('Booking button clicked - Conversion event');
+            window.location.href = 'https://customaccountingcpa.com/free-consultation/';
+        }
+
+        async function submitLead(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalText = submitBtn.textContent;
+            
+            // Disable button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            
+            // Collect form data
+            const formData = new FormData(event.target);
+            const leadData = {
+                // Contact Information
+                firstName: formData.get('firstName'),
+                lastName: formData.get('lastName'),
+                email: formData.get('email'),
+                phone: formData.get('phone') || '',
+                company: formData.get('company') || '',
+                
+                // Quiz Answers
+                quizAnswers: {
+                    revenue: answers.q1,
+                    industry: answers.q2,
+                    taxApproach: answers.q3
+                },
+                
+                // Metadata
+                resultType: getResultType(answers.q3),
+                timestamp: new Date().toISOString(),
+                source: 'tax-savings-quiz',
+                userAgent: navigator.userAgent,
+                referrer: document.referrer || 'direct'
+            };
+            
+            console.log('Lead Data:', leadData);
+            
+            try {
+                // Always save to localStorage first
+                localStorage.setItem('quizLead_' + Date.now(), JSON.stringify(leadData));
+                
+                // Send via Formspree (free, reliable alternative)
+                const formspreeUrl = 'https://formspree.io/f/YOUR_FORMSPREE_ID';
+                
+                // Or send via email using mailto (immediate, no setup)
+                const emailSubject = `New Tax Quiz Lead: ${leadData.firstName} ${leadData.lastName}`;
+                const emailBody = `
+New Tax Quiz Lead Submitted:
+
+CONTACT INFO:
+Name: ${leadData.firstName} ${leadData.lastName}
+Email: ${leadData.email}
+Phone: ${leadData.phone || 'Not provided'}
+Company: ${leadData.company || 'Not provided'}
+
+QUIZ ANSWERS:
+Revenue: ${leadData.quizAnswers.revenue}
+Industry: ${leadData.quizAnswers.industry}
+Tax Approach: ${leadData.quizAnswers.taxApproach}
+Result Type: ${leadData.resultType}
+
+LEAD SCORE: ${calculateSimpleLeadScore(leadData)}
+Submitted: ${leadData.timestamp}
+Source: ${leadData.source}
+                `.trim();
+                
+                // Option 1: Try Formspree (if configured)
+                try {
+                    const response = await fetch(formspreeUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            email: leadData.email,
+                            name: `${leadData.firstName} ${leadData.lastName}`,
+                            message: emailBody,
+                            _replyto: leadData.email,
+                            _subject: emailSubject
+                        })
+                    });
+                    console.log('Formspree response:', response.status);
+                } catch (error) {
+                    // Fallback: Open email client
+                    const mailtoUrl = `mailto:leads@customaccountingcpa.com?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
+                    console.log('Opening email client...');
+                    // Window.open(mailtoUrl); // Uncomment to auto-open email
+                }
+                
+                // Show success - data is always saved locally
+                submitBtn.textContent = 'Success! Redirecting...';
+                submitBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                
+                // Facebook Pixel: Track lead submission
+                if (typeof fbq !== 'undefined') {
+                    fbq('track', 'Lead', {
+                        content_name: 'Tax Quiz Lead',
+                        value: calculateSimpleLeadScore(leadData),
+                        currency: 'USD'
+                    });
+                }
+                
+                // Add download leads button for easy access
+                setTimeout(() => {
+                    // Optional: Auto-download CSV of all leads
+                    // downloadAllLeads();
+                    window.location.href = 'https://customaccountingcpa.com/free-consultation/';
+                }, 1500);
+                
+            } catch (error) {
+                console.error('Error submitting lead:', error);
+                console.error('Error details:', error.message);
+                
+                // Still save locally and proceed (don't block user)
+                localStorage.setItem('quizLead_backup_' + Date.now(), JSON.stringify(leadData));
+                
+                // Show success anyway - data is saved
+                submitBtn.textContent = 'Saved! Redirecting...';
+                submitBtn.style.background = 'linear-gradient(135deg, #28a745 0%, #20c997 100%)';
+                
+                setTimeout(() => {
+                    window.location.href = 'https://customaccountingcpa.com/free-consultation/';
+                }, 1500);
+            }
+        }
+
+        function getResultType(taxApproach) {
+            if (taxApproach === 'once-year' || taxApproach === 'self-done' || (taxApproach && taxApproach.startsWith('other:'))) {
+                return 'high-opportunity';
+            } else if (taxApproach === 'quarterly-reactive') {
+                return 'medium-opportunity';
+            } else {
+                return 'low-opportunity';
+            }
+        }
+
+        function calculateSimpleLeadScore(data) {
+            let score = 50;
+            
+            // Revenue scoring
+            if (data.quizAnswers.revenue === '750k-2m') score += 25;
+            if (data.quizAnswers.revenue === '2m-5m') score += 30;
+            if (data.quizAnswers.revenue === 'over-5m') score += 20;
+            
+            // Tax approach scoring
+            if (data.quizAnswers.taxApproach === 'once-year') score += 30;
+            if (data.quizAnswers.taxApproach === 'self-done') score += 35;
+            if (data.quizAnswers.taxApproach === 'quarterly-reactive') score += 15;
+            
+            // Industry scoring
+            if (data.quizAnswers.industry === 'medical') score += 20;
+            if (data.quizAnswers.industry === 'entertainment') score += 15;
+            if (data.quizAnswers.industry === 'real-estate') score += 15;
+            
+            const finalScore = Math.min(score, 100);
+            const priority = finalScore >= 85 ? 'HOT' : finalScore >= 70 ? 'HIGH' : finalScore >= 55 ? 'MEDIUM' : 'LOW';
+            
+            return `${finalScore}/100 (${priority} PRIORITY)`;
+        }
+
+        // Initialize
+        updateProgress();
+        
+        // Cookie Consent Handler
+        function showCookieBanner() {
+            const cookieConsent = localStorage.getItem('cookieConsent');
+            if (!cookieConsent) {
+                setTimeout(() => {
+                    document.getElementById('cookieBanner').classList.add('show');
+                }, 1000);
+            }
+        }
+        
+        function acceptCookies() {
+            localStorage.setItem('cookieConsent', 'accepted');
+            document.getElementById('cookieBanner').classList.remove('show');
+            
+            // Initialize Facebook Pixel if user accepts
+            if (typeof fbq !== 'undefined') {
+                fbq('consent', 'grant');
+            }
+        }
+        
+        function declineCookies() {
+            localStorage.setItem('cookieConsent', 'declined');
+            document.getElementById('cookieBanner').classList.remove('show');
+            
+            // Revoke Facebook Pixel consent
+            if (typeof fbq !== 'undefined') {
+                fbq('consent', 'revoke');
+            }
+        }
+        
+        // Show banner on page load
+        showCookieBanner();
+        
+        // BONUS: Easy lead download function
+        function downloadAllLeads() {
+            const leads = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('quizLead_')) {
+                    try {
+                        const lead = JSON.parse(localStorage.getItem(key));
+                        leads.push(lead);
+                    } catch (e) {
+                        console.log('Skipping invalid lead data');
+                    }
+                }
+            }
+            
+            if (leads.length === 0) {
+                alert('No leads found in storage');
+                return;
+            }
+            
+            // Convert to CSV
+            const headers = ['Timestamp', 'First Name', 'Last Name', 'Email', 'Phone', 'Company', 'Revenue', 'Industry', 'Tax Approach', 'Result Type', 'Lead Score', 'Priority'];
+            const csvContent = [
+                headers.join(','),
+                ...leads.map(lead => [
+                    lead.timestamp,
+                    lead.firstName,
+                    lead.lastName,
+                    lead.email,
+                    lead.phone || '',
+                    lead.company || '',
+                    lead.quizAnswers?.revenue || '',
+                    lead.quizAnswers?.industry || '',
+                    lead.quizAnswers?.taxApproach || '',
+                    lead.resultType,
+                    calculateSimpleLeadScore(lead).split(' ')[0], // Just the score
+                    calculateSimpleLeadScore(lead).split('(')[1]?.replace(')', '') || '' // Just priority
+                ].map(field => `"${field}"`).join(','))
+            ].join('\n');
+            
+            // Download CSV
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `tax-quiz-leads-${new Date().toISOString().split('T')[0]}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        // Make it accessible from console: downloadAllLeads()
+        window.downloadAllLeads = downloadAllLeads;
+        
+        // Handle instant audit form submission
+        document.addEventListener('DOMContentLoaded', function() {
+            const instantAuditForm = document.getElementById('instant-audit-form');
+            if (instantAuditForm) {
+                instantAuditForm.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    
+                    const form = e.target;
+                    const btn = form.querySelector('button');
+                    
+                    // Show loading state
+                    btn.innerHTML = '⏳ Generating Your Report...';
+                    btn.disabled = true;
+                    
+                    // Calculate tax metrics
+                    const taxableIncome = parseFloat(document.getElementById('taxableIncome').value);
+                    const taxPaid = parseFloat(document.getElementById('taxPaid').value);
+                    const effectiveTaxRate = ((taxPaid / taxableIncome) * 100).toFixed(2);
+                    
+                    // Calculate savings potential
+                    const targetRate = 18; // Conservative CPA target
+                    const savingsAmount = Math.max(0, taxableIncome * ((effectiveTaxRate - targetRate) / 100));
+                    
+                    // Determine priority
+                    let priority = 'LOW';
+                    if (effectiveTaxRate > 25) priority = 'HIGH';
+                    else if (effectiveTaxRate > 20) priority = 'MEDIUM';
+                    
+                    // Update hidden fields
+                    document.getElementById('effectiveTaxRate').value = effectiveTaxRate + '%';
+                    document.getElementById('estimatedSavings').value = '$' + Math.round(savingsAmount).toLocaleString();
+                    document.getElementById('priorityLevel').value = priority;
+                    
+                    // VERIFY quiz data is populated
+                    const revenueValue = document.getElementById('hidden-revenue').value;
+                    const industryValue = document.getElementById('hidden-industry').value;
+                    const approachValue = document.getElementById('hidden-taxApproach').value;
+                    
+                    if (!revenueValue || !industryValue || !approachValue) {
+                        console.error('Quiz data missing!', {
+                            revenue: revenueValue,
+                            industry: industryValue,
+                            approach: approachValue
+                        });
+                        alert('Error: Quiz data not captured. Please refresh and try again.');
+                        btn.innerHTML = '⚡ GENERATE MY FREE REPORT NOW →';
+                        btn.disabled = false;
+                        return;
+                    }
+                    
+                    // Store data for success page
+                    const auditData = {
+                        name: `${document.getElementById('firstName').value} ${document.getElementById('lastName').value}`,
+                        email: document.getElementById('email').value,
+                        phone: document.getElementById('phone').value,
+                        revenue: revenueValue,
+                        industry: industryValue,
+                        taxApproach: approachValue,
+                        taxableIncome: taxableIncome,
+                        taxPaid: taxPaid,
+                        effectiveTaxRate: effectiveTaxRate,
+                        estimatedSavings: Math.round(savingsAmount),
+                        priority: priority
+                    };
+                    
+                    localStorage.setItem('auditData', JSON.stringify(auditData));
+                    
+                    // Submit to Formspree
+                    const formData = new FormData(form);
+                    
+                    try {
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'Accept': 'application/json'
+                            }
+                        });
+                        
+                        if (response.ok) {
+                            // Track conversion
+                            if (typeof fbq !== 'undefined') {
+                                fbq('track', 'Lead', {
+                                    content_name: 'Free Audit Generated',
+                                    value: taxableIncome,
+                                    currency: 'USD',
+                                    predicted_ltv: savingsAmount
+                                });
+                            }
+                            
+                            // Redirect to success page
+                            window.location.href = `quiz-instant-success.html?email=${encodeURIComponent(auditData.email)}&savings=${auditData.estimatedSavings}&rate=${effectiveTaxRate}`;
+                        } else {
+                            // Handle error
+                            btn.innerHTML = '❌ Error - Please Try Again';
+                            btn.disabled = false;
+                            alert('Something went wrong. Please try again or contact support.');
+                        }
+                    } catch (error) {
+                        console.error('Form submission error:', error);
+                        btn.innerHTML = '❌ Error - Please Try Again';
+                        btn.disabled = false;
+                    }
+                });
+            }
+        });
+        
+        // CRITICAL: Populate hidden fields with quiz answers when results page loads
+        function populateQuizData() {
+            // Get the answer text from quiz responses
+            const revenueText = getAnswerText('q1', answers.q1);
+            const industryText = getAnswerText('q2', answers.q2);
+            const approachText = getAnswerText('q3', answers.q3);
+            
+            // Populate hidden fields
+            document.getElementById('hidden-revenue').value = revenueText;
+            document.getElementById('hidden-industry').value = industryText;
+            document.getElementById('hidden-taxApproach').value = approachText;
+            
+            console.log('Quiz data populated:', {
+                revenue: revenueText,
+                industry: industryText,
+                taxApproach: approachText
+            });
+        }
+
+        // Helper function to get answer text
+        function getAnswerText(questionId, answerValue) {
+            const answerMap = {
+                'q1': {
+                    'under750': 'Under $750K',
+                    '750-2m': '$750K - $2M',
+                    '2m-5m': '$2M - $5M',
+                    'over5m': 'Over $5M'
+                },
+                'q2': {
+                    'medical': 'Medical/Healthcare',
+                    'entertainment': 'Entertainment',
+                    'realestate': 'Real Estate',
+                    'professional': 'Professional Services or Other'
+                },
+                'q3': {
+                    'once': 'Once a year at tax time only',
+                    'quarterly': 'Quarterly check-ins but mostly reactive',
+                    'strategic': 'Ongoing proactive strategic planning sessions',
+                    'diy': 'I do my own taxes or not sure'
+                }
+            };
+            
+            return answerMap[questionId]?.[answerValue] || answerValue;
+        }
+    </script>
+    
+    <!-- Cookie Consent Banner -->
+    <div id="cookieBanner" class="cookie-banner">
+        <div class="cookie-content">
+            <div class="cookie-text">
+                <strong>🍪 We use cookies</strong><br>
+                We use cookies and similar technologies to improve your experience, analyze site traffic, and show personalized content. By clicking "Accept", you consent to our use of cookies and tracking technologies including Facebook Pixel and Microsoft Clarity.
+                <a href="https://customaccountingcpa.com/privacy-policy/" target="_blank">Learn more</a>
+            </div>
+            <div class="cookie-buttons">
+                <button class="cookie-btn cookie-accept" onclick="acceptCookies()">Accept All</button>
+                <button class="cookie-btn cookie-decline" onclick="declineCookies()">Decline</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <div class="quiz-footer">
+        © 2024 Custom Accounting CPA. All Rights Reserved.
+        <a href="https://customaccountingcpa.com/privacy-policy/" target="_blank">Privacy Policy</a> |
+        <a href="https://customaccountingcpa.com/terms-conditions/" target="_blank">Terms & Conditions</a>
+    </div>
+</body>
+</html>
