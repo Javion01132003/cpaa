@@ -1217,7 +1217,19 @@
                 return;
             }
             
-            if (type === 'medium') {
+            if (type === 'high') {
+                title.innerHTML = 'You\'re Likely Overpaying by <span class="gradient-text">$20K-$100K</span> Annually';
+                subtitle.textContent = 'Most business owners between $500K-$5M overpay by $20K-$100K annually—but it\'s fixable.';
+                content.innerHTML = `
+                    <p style="font-size: 1.05rem; line-height: 1.7; margin-bottom: 2rem;">
+                        You're doing taxes once a year or handling them yourself—that's the #1 reason business owners overpay. 
+                        Tax planning needs to happen year-round, not just at tax time.
+                    </p>
+                    <p style="text-align: center; background: #f8f9fa; padding: 1.5rem; border-radius: 12px; margin: 2rem 0;">
+                        A client saved <span class="gradient-text">tens of thousands annually</span> by switching from annual to strategic planning—that's a <span class="gradient-text">760% ROI</span>.
+                    </p>
+                `;
+            } else if (type === 'medium') {
                 title.innerHTML = 'You Could Be Saving <span class="gradient-text">$15K-$50K</span> More Annually';
                 subtitle.textContent = 'You\'re doing better than most—but there\'s room for improvement.';
                 content.innerHTML = `
@@ -1824,10 +1836,10 @@ Source: ${leadData.source}
         function getAnswerText(questionId, answerValue) {
             const answerMap = {
                 'q1': {
-                    'under750': 'Under $750K',
-                    '750-2m': '$750K - $2M',
+                    'under-750k': 'Under $750K',
+                    '750k-2m': '$750K - $2M',
                     '2m-5m': '$2M - $5M',
-                    'over5m': 'Over $5M'
+                    'over-5m': 'Over $5M'
                 },
                 'q2': {
                     'medical': 'Medical/Healthcare',
@@ -1836,10 +1848,10 @@ Source: ${leadData.source}
                     'professional': 'Professional Services or Other'
                 },
                 'q3': {
-                    'once': 'Once a year at tax time only',
-                    'quarterly': 'Quarterly check-ins but mostly reactive',
+                    'once-year': 'Once a year at tax time only',
+                    'quarterly-reactive': 'Quarterly check-ins but mostly reactive',
                     'strategic': 'Ongoing proactive strategic planning sessions',
-                    'diy': 'I do my own taxes or not sure'
+                    'self-done': 'I do my own taxes or not sure'
                 }
             };
             
