@@ -1559,16 +1559,18 @@ Source: ${leadData.source}
                          style="min-width:320px;height:600px;">
                     </div>
                     
-                    <button onclick="closeCalendarPopup()" style="
-                        background: #666;
+                    <button onclick="redirectToBooking()" style="
+                        background: #008080;
                         color: white;
                         border: none;
-                        padding: 10px 20px;
-                        border-radius: 6px;
+                        padding: 15px 30px;
+                        border-radius: 8px;
                         cursor: pointer;
                         margin-top: 15px;
                         font-family: 'Montserrat', sans-serif;
-                    ">Close</button>
+                        font-weight: bold;
+                        font-size: 16px;
+                    ">Book Your Free Strategy Call →</button>
                 </div>
             `;
             
@@ -1632,6 +1634,25 @@ Source: ${leadData.source}
                 document.body.style.overflow = '';
                 window.currentCalendarOverlay = null;
             }
+        }
+        
+        // Global function to redirect to booking page
+        function redirectToBooking() {
+            const auditData = JSON.parse(localStorage.getItem('auditData') || '{}');
+            const calendlyUrl = `https://calendly.com/genz-investorr/custom-accounting-cpa?` +
+                `name=${encodeURIComponent(auditData.name || '')}&` +
+                `email=${encodeURIComponent(auditData.email || '')}&` +
+                `a1=Revenue: ${encodeURIComponent(auditData.revenue || '')}&` +
+                `a2=Industry: ${encodeURIComponent(auditData.industry || '')}&` +
+                `a3=Tax Rate: ${auditData.effectiveTaxRate || ''}%&` +
+                `a4=Potential Savings: $${auditData.estimatedSavings || '0'}&` +
+                `hide_gdpr_banner=1&primary_color=008080`;
+            
+            // Close popup first
+            closeCalendarPopup();
+            
+            // Redirect to Calendly
+            window.open(calendlyUrl, '_blank');
         }
         
         // Handle instant audit form submission
