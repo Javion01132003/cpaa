@@ -1638,21 +1638,11 @@ Source: ${leadData.source}
         
         // Global function to redirect to booking page
         function redirectToBooking() {
-            const auditData = JSON.parse(localStorage.getItem('auditData') || '{}');
-            const calendlyUrl = `https://calendly.com/genz-investorr/custom-accounting-cpa?` +
-                `name=${encodeURIComponent(auditData.name || '')}&` +
-                `email=${encodeURIComponent(auditData.email || '')}&` +
-                `a1=Revenue: ${encodeURIComponent(auditData.revenue || '')}&` +
-                `a2=Industry: ${encodeURIComponent(auditData.industry || '')}&` +
-                `a3=Tax Rate: ${auditData.effectiveTaxRate || ''}%&` +
-                `a4=Potential Savings: $${auditData.estimatedSavings || '0'}&` +
-                `hide_gdpr_banner=1&primary_color=008080`;
-            
             // Close popup first
             closeCalendarPopup();
             
-            // Redirect to Calendly
-            window.open(calendlyUrl, '_blank');
+            // Redirect to Custom Accounting CPA website
+            window.open('https://customaccountingcpa.com/free-consultation/', '_blank');
         }
         
         // Handle instant audit form submission
